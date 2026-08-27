@@ -249,9 +249,38 @@ function setCurrentUser(user, token) {
   document.getElementById("authUserBox").style.display = "flex";
   document.getElementById("userDisplayName").textContent = user.displayName || user.username;
 
+  const regionFilter = document.getElementById("regionFilter");
+  if (user.role === "regional") {
+    appState.filters.region = user.region;
+    if (regionFilter) {
+      regionFilter.value = user.region;
+      regionFilter.disabled = true;
+    }
+    const districtSelect = document.getElementById("districtFilter");
+    if (districtSelect) {
+      const t = window.I18N ? window.I18N.t : (k) => k;
+      districtSelect.innerHTML = `<option value="">${t("filter_district_all")}</option>`;
+      const distList = UZBEKISTAN_REGIONS[user.region] || UZBEKISTAN_REGIONS[normalizeRegion(user.region)];
+      if (distList && distList.length) {
+        districtSelect.disabled = false;
+        distList.forEach(dist => {
+          const opt = document.createElement("option");
+          opt.value = dist;
+          opt.textContent = dist;
+          districtSelect.appendChild(opt);
+        });
+      }
+    }
+  } else {
+    appState.filters.region = "";
+    if (regionFilter) {
+      regionFilter.disabled = false;
+    }
+  }
+
   // 2. Action bars based on Role
   updateRoleButtons();
-  renderResults();
+  applyFilters();
 }
 
 function clearCurrentUser() {
@@ -264,8 +293,15 @@ function clearCurrentUser() {
   document.getElementById("authGuestBox").style.display = "flex";
   document.getElementById("authUserBox").style.display = "none";
 
+  const regionFilter = document.getElementById("regionFilter");
+  if (regionFilter) {
+    regionFilter.disabled = false;
+    regionFilter.value = "";
+  }
+  appState.filters.region = "";
+
   updateRoleButtons();
-  renderResults();
+  applyFilters();
 }
 
 function canManageItem(item) {
@@ -435,24 +471,43 @@ async function loadData() {
   }
 }
 
-function updateStats(stats) {
-  document.getElementById("statTotal").textContent = stats.totalAgronomists ?? appState.agronomists.length;
-  document.getElementById("statRegions").textContent = stats.totalRegions ?? "14";
-  document.getElementById("statFruitGrape").textContent = stats.fruitGrapeConsultants ?? "--";
+function updateStats() {
+  const user = appState.currentUser;
+  const isRegional = user && user.role === "regional";
+  const list = isRegional
+    ? appState.agronomists.filter(a => normalizeRegion(a.region) === normalizeRegion(user.region))
+    : appState.agronomists;
 
-  const higherEduCount = appState.agronomists.filter(a => (a.university || "").length > 3).length;
-  const higherEduPercent = appState.agronomists.length ? Math.round((higherEduCount / appState.agronomists.length) * 100) : 100;
+  const total = list.length;
+  const regionsCount = isRegional ? 1 : new Set(list.map(a => a.region)).size;
+  const higherEduCount = list.filter(a => (a.university || "").length > 3).length;
+  const higherEduPercent = total ? Math.round((higherEduCount / total) * 100) : 100;
+  const fruitGrapeCount = list.filter(a => {
+    const text = ((a.direction || "") + " " + (a.specialization || "")).toLowerCase();
+    return ["bog‘", "bog", "uzum", "tok", "meva"].some(k => text.includes(k));
+  }).length;
+
+  document.getElementById("statTotal").textContent = total;
+  document.getElementById("statRegions").textContent = regionsCount;
+  document.getElementById("statFruitGrape").textContent = fruitGrapeCount;
   document.getElementById("statHigherEdu").textContent = `${higherEduPercent}%`;
 }
 
 function applyFilters() {
   const { q, region, district, specialization } = appState.filters;
+  const user = appState.currentUser;
+  const isRegional = user && user.role === "regional";
+  const targetRegion = isRegional ? user.region : region;
 
   appState.filtered = appState.agronomists.filter(item => {
-    if (region) {
-      const normFilter = normalizeRegion(region);
+    if (isRegional) {
+      if (normalizeRegion(item.region) !== normalizeRegion(user.region)) {
+        return false;
+      }
+    } else if (targetRegion) {
+      const normFilter = normalizeRegion(targetRegion);
       const normItem = normalizeRegion(item.region);
-      if (normFilter !== normItem && item.region !== region) return false;
+      if (normFilter !== normItem && item.region !== targetRegion) return false;
     }
     if (district && item.district !== district) return false;
 
@@ -477,6 +532,7 @@ function applyFilters() {
     return true;
   });
 
+  updateStats();
   renderResults();
 }
 
@@ -772,16 +828,41 @@ function initEventListeners() {
   // Reset Filters
   const resetHandler = () => {
     document.getElementById("searchInput").value = "";
-    document.getElementById("regionFilter").value = "";
+    const isRegional = appState.currentUser && appState.currentUser.role === "regional";
+    const regFilter = document.getElementById("regionFilter");
     const dist = document.getElementById("districtFilter");
     const t = window.I18N ? window.I18N.t : (k) => k;
-    dist.innerHTML = `<option value="">${t("filter_district_all")}</option>`;
-    dist.disabled = true;
+
+    if (isRegional) {
+      if (regFilter) {
+        regFilter.value = appState.currentUser.region;
+        regFilter.disabled = true;
+      }
+      appState.filters = { q: "", region: appState.currentUser.region, district: "", specialization: "" };
+      const distList = UZBEKISTAN_REGIONS[appState.currentUser.region] || UZBEKISTAN_REGIONS[normalizeRegion(appState.currentUser.region)];
+      dist.innerHTML = `<option value="">${t("filter_district_all")}</option>`;
+      if (distList && distList.length) {
+        dist.disabled = false;
+        distList.forEach(d => {
+          const opt = document.createElement("option");
+          opt.value = d;
+          opt.textContent = d;
+          dist.appendChild(opt);
+        });
+      }
+    } else {
+      if (regFilter) {
+        regFilter.value = "";
+        regFilter.disabled = false;
+      }
+      dist.innerHTML = `<option value="">${t("filter_district_all")}</option>`;
+      dist.disabled = true;
+      appState.filters = { q: "", region: "", district: "", specialization: "" };
+    }
 
     document.querySelectorAll(".spec-chip").forEach(c => c.classList.remove("active"));
     document.querySelector(".spec-chip[data-spec='']")?.classList.add("active");
 
-    appState.filters = { q: "", region: "", district: "", specialization: "" };
     appState.pagination.page = 1;
     applyFilters();
   };

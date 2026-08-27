@@ -276,96 +276,99 @@
 
   <!-- MODAL 1: Add / Edit Agronomist -->
   <div class="modal-overlay" id="agroModal" hidden>
-    <div class="modal-card modal-lg">
+    <div class="modal-card modal-lg agro-form-card">
       <div class="modal-header">
         <div class="modal-title-group">
-          <i class="fas fa-user-gear"></i>
-          <h3 id="modalTitle" data-i18n="modal_agro_add_title">Yangi Malakali Agronom Kiritish</h3>
+          <div class="modal-icon-badge">
+            <i class="fas fa-user-pen"></i>
+          </div>
+          <div>
+            <h3 id="modalTitle" data-i18n="modal_agro_add_title">Yangi Malakali Agronom Kiritish</h3>
+            <span class="modal-subtitle">Reyestr ma’lumotlar bazasiga mutaxassis kiritish yoki tahrirlash</span>
+          </div>
         </div>
         <button class="modal-close-btn" id="closeAgroModalBtn" type="button" aria-label="Yopish">&times;</button>
       </div>
+
       <form id="agroForm" class="modal-form">
         <input type="hidden" id="agroId" value="">
 
         <!-- Locked Region Notice for Regional Staff -->
         <div class="region-lock-badge" id="agroRegionLockBadge" style="display: none;">
-          <i class="fas fa-lock"></i>
+          <i class="fas fa-shield-alt"></i>
           <span><span data-i18n="modal_agro_region_lock">Biriktirilgan hudud:</span> <strong id="lockedRegionNameText">Andijon</strong> <span data-i18n="modal_agro_region_lock_note">(faqat o‘z hududingizga kiritasiz)</span></span>
         </div>
 
-        <div class="form-grid">
-          <!-- Region -->
-          <div class="form-group">
-            <label for="agroRegion"><span data-i18n="lbl_region">Hudud</span> <span class="req">*</span></label>
-            <select id="agroRegion" required>
-              <option value="" data-i18n="filter_district_prompt">-- Viloyatni tanlang --</option>
-            </select>
+        <!-- Section 1: Shaxsiy va Hududiy Ma'lumotlar -->
+        <div class="form-section-card">
+          <div class="section-title"><i class="fas fa-id-card"></i> <span>1. Shaxsiy va Hududiy Ma’lumotlar</span></div>
+          <div class="form-grid">
+            <div class="form-group form-col-2">
+              <label for="agroFullName"><i class="fas fa-user"></i> <span data-i18n="lbl_fullname">Malakali agronom: Familiya, ismi va otasining ismi</span> <span class="req">*</span></label>
+              <input type="text" id="agroFullName" placeholder="Masalan: Sulaymonov Abdumutallib Ko‘chqarovich" required minlength="3" maxlength="150">
+            </div>
+            <div class="form-group">
+              <label for="agroRegion"><i class="fas fa-map-marker-alt"></i> <span data-i18n="lbl_region">Hudud</span> <span class="req">*</span></label>
+              <select id="agroRegion" required>
+                <option value="" data-i18n="filter_district_prompt">-- Viloyatni tanlang --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="agroDistrict"><i class="fas fa-location-dot"></i> <span data-i18n="lbl_district">Tuman</span> <span class="req">*</span></label>
+              <select id="agroDistrict" required disabled>
+                <option value="" data-i18n="filter_district_prompt">-- Avval viloyatni tanlang --</option>
+              </select>
+            </div>
           </div>
+        </div>
 
-          <!-- District -->
-          <div class="form-group">
-            <label for="agroDistrict"><span data-i18n="lbl_district">Tuman</span> <span class="req">*</span></label>
-            <select id="agroDistrict" required disabled>
-              <option value="" data-i18n="filter_district_prompt">-- Avval viloyatni tanlang --</option>
-            </select>
+        <!-- Section 2: Aloqa va Ta'lim -->
+        <div class="form-section-card">
+          <div class="section-title"><i class="fas fa-phone-volume"></i> <span>2. Bog‘lanish va Ta’lim</span></div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="agroPhone"><i class="fas fa-phone"></i> <span data-i18n="lbl_phone">Telefon raqami</span> <span class="req">*</span></label>
+              <input type="text" id="agroPhone" placeholder="Masalan: 99 467-96-67" required>
+            </div>
+            <div class="form-group">
+              <label for="agroBirthDate"><i class="fas fa-calendar-day"></i> <span data-i18n="lbl_birth">Tug‘ilgan yili</span></label>
+              <input type="text" id="agroBirthDate" placeholder="Masalan: 1967">
+            </div>
+            <div class="form-group">
+              <label for="agroSpecialization"><i class="fas fa-award"></i> <span data-i18n="lbl_spec">Mutaxassisligi</span> <span class="req">*</span></label>
+              <input type="text" id="agroSpecialization" placeholder="Masalan: Agronom, Bog‘bon-agronom, Uzumchi" value="Agronom" required>
+            </div>
+            <div class="form-group">
+              <label for="agroGradYear"><i class="fas fa-graduation-cap"></i> <span data-i18n="lbl_grad_year">Tamomlagan yili</span></label>
+              <input type="number" id="agroGradYear" placeholder="Masalan: 1996" min="1940" max="2050">
+            </div>
+            <div class="form-group form-col-2">
+              <label for="agroUniversity"><i class="fas fa-building-columns"></i> <span data-i18n="lbl_university">Tamomlagan o‘quv yurti</span></label>
+              <input type="text" id="agroUniversity" placeholder="Masalan: Toshkent Davlat Agrar Universiteti">
+            </div>
           </div>
+        </div>
 
-          <!-- Full Name -->
-          <div class="form-group form-col-2">
-            <label for="agroFullName"><span data-i18n="lbl_fullname">Malakali agronom: Familiya, ismi va otasining ismi</span> <span class="req">*</span></label>
-            <input type="text" id="agroFullName" placeholder="Masalan: Sulaymonov Abdumutallib Ko‘chqarovich" required minlength="3" maxlength="150">
-          </div>
-
-          <!-- Phone -->
-          <div class="form-group">
-            <label for="agroPhone"><span data-i18n="lbl_phone">Telefon raqami</span> <span class="req">*</span></label>
-            <input type="text" id="agroPhone" placeholder="Masalan: 99 467-96-67" required>
-          </div>
-
-          <!-- Birth Date/Year -->
-          <div class="form-group">
-            <label for="agroBirthDate"><span data-i18n="lbl_birth">Tug‘ilgan yili</span></label>
-            <input type="text" id="agroBirthDate" placeholder="Masalan: 1967">
-          </div>
-
-          <!-- Specialization -->
-          <div class="form-group">
-            <label for="agroSpecialization"><span data-i18n="lbl_spec">Mutaxassisligi</span> <span class="req">*</span></label>
-            <input type="text" id="agroSpecialization" placeholder="Masalan: Agronom, Bog‘bon-agronom, Uzumchi" value="Agronom" required>
-          </div>
-
-          <!-- Graduation Year -->
-          <div class="form-group">
-            <label for="agroGradYear"><span data-i18n="lbl_grad_year">Tamomlagan yili</span></label>
-            <input type="number" id="agroGradYear" placeholder="Masalan: 1996" min="1940" max="2050">
-          </div>
-
-          <!-- University -->
-          <div class="form-group form-col-2">
-            <label for="agroUniversity"><span data-i18n="lbl_university">Tamomlagan o‘quv yurti</span></label>
-            <input type="text" id="agroUniversity" placeholder="Masalan: Toshkent Davlat Agrar Universiteti">
-          </div>
-
-          <!-- Direction & Consultation topics -->
-          <div class="form-group form-col-2">
-            <label for="agroDirection"><span data-i18n="lbl_direction">Maslahat yo‘nalishi va mutaxassisligi</span></label>
-            <input type="text" id="agroDirection" placeholder="Masalan: Bog‘dorchilik va intensiv ko‘chatchilik, tomchilatib sug‘orish">
-          </div>
-
-          <!-- Experience -->
-          <div class="form-group">
-            <label for="agroExperience"><span data-i18n="lbl_experience">Ish tajribasi</span></label>
-            <input type="text" id="agroExperience" placeholder="Masalan: 25 yil">
-          </div>
-
-          <!-- Status -->
-          <div class="form-group">
-            <label for="agroStatus"><span data-i18n="lbl_status">Holati</span></label>
-            <select id="agroStatus">
-              <option value="active" data-i18n="opt_status_active">Faol (Maslahat beradi)</option>
-              <option value="busy" data-i18n="opt_status_busy">Vaqtincha band</option>
-              <option value="inactive" data-i18n="opt_status_inactive">Faol emas</option>
-            </select>
+        <!-- Section 3: Maslahat Yo'nalishi va Holat -->
+        <div class="form-section-card">
+          <div class="section-title"><i class="fas fa-seedling"></i> <span>3. Konsultatsiya Yo‘nalishi va Ish Tajribasi</span></div>
+          <div class="form-grid">
+            <div class="form-group form-col-2">
+              <label for="agroDirection"><i class="fas fa-tags"></i> <span data-i18n="lbl_direction">Maslahat yo‘nalishi va mutaxassisligi</span></label>
+              <input type="text" id="agroDirection" placeholder="Masalan: Bog‘dorchilik va intensiv ko‘chatchilik, tomchilatib sug‘orish">
+            </div>
+            <div class="form-group">
+              <label for="agroExperience"><i class="fas fa-briefcase"></i> <span data-i18n="lbl_experience">Ish tajribasi</span></label>
+              <input type="text" id="agroExperience" placeholder="Masalan: 25 yil">
+            </div>
+            <div class="form-group">
+              <label for="agroStatus"><i class="fas fa-circle-check"></i> <span data-i18n="lbl_status">Holati</span></label>
+              <select id="agroStatus">
+                <option value="active" data-i18n="opt_status_active">Faol (Maslahat beradi)</option>
+                <option value="busy" data-i18n="opt_status_busy">Vaqtincha band</option>
+                <option value="inactive" data-i18n="opt_status_inactive">Faol emas</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -511,28 +514,37 @@
 
   <!-- MODAL 4: User / Staff Login Modal -->
   <div class="modal-overlay" id="loginModal" hidden>
-    <div class="modal-card modal-sm">
-      <div class="modal-header">
+    <div class="modal-card modal-sm login-card-custom">
+      <div class="modal-header login-card-header">
         <div class="modal-title-group">
-          <i class="fas fa-shield-halved"></i>
-          <h3 data-i18n="modal_login_title">Tizimga Kirish</h3>
+          <div class="login-emblem-badge">
+            <i class="fas fa-shield-halved"></i>
+          </div>
+          <div>
+            <h3 data-i18n="modal_login_title">Tizimga Kirish</h3>
+            <span class="modal-subtitle">Agrosanoatni rivojlantirish agentligi xodimlari uchun</span>
+          </div>
         </div>
         <button class="modal-close-btn" id="closeLoginModalBtn" type="button" aria-label="Yopish">&times;</button>
       </div>
 
-      <form id="loginForm" class="modal-form">
+      <form id="loginForm" class="modal-form login-form-body">
         <div class="login-intro-text" data-i18n="login_intro">
-          Agrosanoatni rivojlantirish agentligi viloyat mas'ul xodimi yoki Bosh Administrator hisobingiz orqali kiring:
+          Viloyat boshqarmasi mas'ul xodimi yoki Bosh Administrator hisobingiz orqali tizimga kiring:
         </div>
 
-        <div class="form-group">
-          <label for="loginUsername"><i class="fas fa-user"></i> <span data-i18n="lbl_login_username">Login</span> <span class="req">*</span></label>
-          <input type="text" id="loginUsername" placeholder="Masalan: andijon_agentlik" required autocomplete="username">
+        <div class="form-group login-field">
+          <label for="loginUsername"><i class="fas fa-user-shield"></i> <span data-i18n="lbl_login_username">Login</span> <span class="req">*</span></label>
+          <div class="input-icon-wrap">
+            <i class="fas fa-at input-lead-icon"></i>
+            <input type="text" id="loginUsername" placeholder="Masalan: andijon_agentlik" required autocomplete="username">
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="loginPassword"><i class="fas fa-key"></i> <span data-i18n="lbl_login_password">Parol</span> <span class="req">*</span></label>
-          <div class="password-input-wrapper">
+        <div class="form-group login-field">
+          <label for="loginPassword"><i class="fas fa-lock"></i> <span data-i18n="lbl_login_password">Parol</span> <span class="req">*</span></label>
+          <div class="input-icon-wrap password-input-wrapper">
+            <i class="fas fa-key input-lead-icon"></i>
             <input type="password" id="loginPassword" placeholder="Parolingizni kiriting" required autocomplete="current-password">
             <button type="button" class="btn-toggle-password" id="togglePasswordBtn" title="Parolni ko‘rsatish">
               <i class="fas fa-eye" id="togglePasswordIcon"></i>
@@ -543,9 +555,9 @@
         <div class="modal-status-message" id="loginStatusMessage" hidden></div>
 
         <div class="modal-footer login-footer">
-          <button type="button" class="btn btn-secondary" id="cancelLoginBtn" data-i18n="btn_cancel">Bekor qilish</button>
-          <button type="submit" class="btn btn-primary" id="submitLoginBtn">
-            <i class="fas fa-arrow-right-to-bracket"></i> <span data-i18n="btn_submit_login">Kirish</span>
+          <button type="button" class="btn btn-secondary btn-login-cancel" id="cancelLoginBtn" data-i18n="btn_cancel">Bekor qilish</button>
+          <button type="submit" class="btn btn-primary btn-login-submit" id="submitLoginBtn">
+            <i class="fas fa-right-to-bracket"></i> <span data-i18n="btn_submit_login">Kirish</span>
           </button>
         </div>
       </form>
