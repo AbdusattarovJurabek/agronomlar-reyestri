@@ -76,8 +76,10 @@
         </div>
       </div>
       <div class="header-badge">
-        <i class="fas fa-shield-alt"></i>
-        <div>
+        <div class="header-badge-icon-wrap">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <div class="header-badge-text">
           <strong data-i18n="badge_official">Rasmiy Reyestr</strong>
           <small data-i18n="badge_agency_system">Agentlik Portali</small>
         </div>
@@ -240,9 +242,7 @@
             <th class="col-phone" data-i18n="th_phone">Telefon raqami</th>
             <th class="col-birth" data-i18n="th_birth">Tug‘ilgan yili</th>
             <th class="col-spec" data-i18n="th_spec">Mutaxassisligi</th>
-            <th class="col-university" data-i18n="th_university">Tamomlagan o‘quv yurti</th>
-            <th class="col-year" data-i18n="th_grad_year">Tamomlagan yili</th>
-            <th class="col-actions" id="thActions" style="display: none;" data-i18n="th_actions">Amallar</th>
+            <th class="col-actions" data-i18n="th_actions">Amallar</th>
           </tr>
         </thead>
         <tbody id="agronomistsTableBody">
@@ -273,6 +273,89 @@
       </div>
     </div>
   </main>
+
+  <!-- MODAL 0: Agronomist Full Details Modal (Batafsil Ma'lumot) -->
+  <div class="modal-overlay" id="detailsModal" hidden>
+    <div class="modal-card modal-md agro-details-card">
+      <div class="modal-header agro-details-header">
+        <div class="modal-title-group">
+          <div class="details-avatar-badge" id="detailsAvatar">AG</div>
+          <div>
+            <h3 id="detailsFullName">Sulaymonov Abdumutallib Ko‘chqarovich</h3>
+            <div class="details-header-meta">
+              <span class="region-pill" id="detailsRegionBadge">Andijon, Paxtaobod</span>
+              <span class="status-pill status-active" id="detailsStatusBadge">Faol</span>
+            </div>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeDetailsModalBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+
+      <div class="modal-body details-modal-body">
+        <div class="details-info-grid">
+          <!-- Item 1: Telefon -->
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-phone"></i> Telefon raqami:</span>
+            <div class="detail-value">
+              <a href="#" id="detailsPhoneLink" class="details-phone-link">
+                <i class="fas fa-phone-volume"></i> <span id="detailsPhoneText">+998 90 621-53-00</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Item 2: Tug'ilgan yili -->
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-calendar-day"></i> Tug‘ilgan yili:</span>
+            <span class="detail-value font-semibold" id="detailsBirthYear">1958</span>
+          </div>
+
+          <!-- Item 3: Mutaxassisligi -->
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-award"></i> Mutaxassisligi:</span>
+            <span class="detail-value font-semibold" id="detailsSpecialization">Agronom</span>
+          </div>
+
+          <!-- Item 4: Ish tajribasi -->
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-briefcase"></i> Ish tajribasi:</span>
+            <span class="detail-value" id="detailsExperience">25 yil</span>
+          </div>
+
+          <!-- Item 5: O'quv yurti -->
+          <div class="detail-item detail-full-width">
+            <span class="detail-label"><i class="fas fa-building-columns"></i> Tamomlagan o‘quv yurti:</span>
+            <span class="detail-value highlight-value" id="detailsUniversity">Toshkent Davlat Agrar Universiteti</span>
+          </div>
+
+          <!-- Item 6: Tamomlagan yili -->
+          <div class="detail-item">
+            <span class="detail-label"><i class="fas fa-graduation-cap"></i> Tamomlagan yili:</span>
+            <span class="detail-value" id="detailsGradYear">1996</span>
+          </div>
+
+          <!-- Item 7: Yo'nalish va ixtisoslik -->
+          <div class="detail-item detail-full-width">
+            <span class="detail-label"><i class="fas fa-seedling"></i> Maslahat yo‘nalishi va ixtisosligi:</span>
+            <span class="detail-value text-accent" id="detailsDirection">Bog‘dorchilik, tokchilik va intensiv agrotexnika</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer details-footer">
+        <div class="details-left-actions">
+          <button type="button" class="btn btn-secondary" id="closeDetailsBtn" data-i18n="btn_close">Yopish</button>
+        </div>
+        <div class="details-right-actions">
+          <button type="button" class="btn btn-action-edit-detail" id="detailsEditBtn" style="display: none;">
+            <i class="fas fa-edit"></i> <span data-i18n="btn_edit">Tahrirlash</span>
+          </button>
+          <button type="button" class="btn btn-primary" id="detailsConsultBtn">
+            <i class="fas fa-comments"></i> <span>Konsultatsiya olish</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL 1: Add / Edit Agronomist -->
   <div class="modal-overlay" id="agroModal" hidden>

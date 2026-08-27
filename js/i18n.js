@@ -71,11 +71,15 @@ const I18N_TRANSLATIONS = {
     th_university: "Tamomlagan o‘quv yurti",
     th_grad_year: "Tamomlagan yili",
     th_actions: "Amallar",
+    btn_details: "Batafsil",
     btn_consult: "Maslahat",
     btn_edit: "Tahrirlash",
     btn_delete: "O‘chirish",
     empty_title: "Hech qanday ma’lumot topilmadi",
     empty_desc: "Kiritilgan so‘rov yoki tanlangan filtrlarga mos agronom mutaxassis topilmadi.",
+
+    // Modal 0: Details
+    modal_details_title: "Agronom Ma’lumotnomasi",
 
     // Modal 1: Add / Edit Agronomist
     modal_agro_add_title: "Yangi Malakali Agronom Kiritish",
@@ -234,11 +238,15 @@ const I18N_TRANSLATIONS = {
     th_university: "Оконченное учебное заведение",
     th_grad_year: "Год окончания",
     th_actions: "Действия",
+    btn_details: "Подробнее",
     btn_consult: "Консультация",
     btn_edit: "Редактировать",
     btn_delete: "Удалить",
     empty_title: "Ничего не найдено",
     empty_desc: "По вашему запросу или выбранным фильтрам квалифицированные специалисты не найдены.",
+
+    // Modal 0: Details
+    modal_details_title: "Сведения об агрономе",
 
     // Modal 1: Add / Edit Agronomist
     modal_agro_add_title: "Внесение нового квалифицированного агронома",
@@ -397,11 +405,15 @@ const I18N_TRANSLATIONS = {
     th_university: "Graduated University",
     th_grad_year: "Graduation Year",
     th_actions: "Actions",
+    btn_details: "Details",
     btn_consult: "Consult",
     btn_edit: "Edit",
     btn_delete: "Delete",
     empty_title: "No records found",
     empty_desc: "No qualified agronomists match your search query or selected filters.",
+
+    // Modal 0: Details
+    modal_details_title: "Agronomist Profile",
 
     // Modal 1: Add / Edit Agronomist
     modal_agro_add_title: "Add New Qualified Agronomist",

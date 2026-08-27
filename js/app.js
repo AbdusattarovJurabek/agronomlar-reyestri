@@ -580,10 +580,8 @@ function renderResults() {
 function formatFullName(fullName) {
   if (!fullName) return "—";
   const parts = fullName.trim().split(/\s+/);
-  if (parts.length >= 3) {
+  if (parts.length >= 2) {
     return `<div class="name-surname">${escapeHtml(parts[0])}</div><div class="name-rest">${escapeHtml(parts.slice(1).join(" "))}</div>`;
-  } else if (parts.length === 2) {
-    return `<div class="name-surname">${escapeHtml(parts[0])}</div><div class="name-rest">${escapeHtml(parts[1])}</div>`;
   }
   return `<div class="name-surname">${escapeHtml(fullName)}</div>`;
 }
@@ -621,12 +619,6 @@ function renderTableView(items, startNumber) {
   tbody.innerHTML = "";
   const t = window.I18N ? window.I18N.t : (k) => k;
   const getReg = window.I18N ? window.I18N.getRegionName : (r) => r;
-  const isLoggedIn = !!appState.currentUser;
-  const thActions = document.getElementById("thActions");
-
-  if (thActions) {
-    thActions.style.display = isLoggedIn ? "" : "none";
-  }
 
   items.forEach((item, index) => {
     const tr = document.createElement("tr");
@@ -642,7 +634,9 @@ function renderTableView(items, startNumber) {
         <span class="region-pill">${escapeHtml(localizedRegion)}</span>
       </td>
       <td class="col-district">${escapeHtml(item.district)}</td>
-      <td class="col-name">${formatFullName(item.fullName)}</td>
+      <td class="col-name clickable-name" onclick="openDetailsModal(${item.id})" title="${t('btn_details')}">
+        ${formatFullName(item.fullName)}
+      </td>
       <td class="col-phone">
         <a href="tel:+998${escapeHtml(rawDigits.slice(-9))}" class="phone-link">
           <i class="fas fa-phone-alt"></i> ${escapeHtml(shortPhone)}
@@ -650,22 +644,21 @@ function renderTableView(items, startNumber) {
       </td>
       <td class="col-birth">${escapeHtml(birthYear)}</td>
       <td class="col-spec">${escapeHtml(item.specialization || "Agronom")}</td>
-      <td class="col-university" title="${escapeHtml(item.university || "")}">${escapeHtml(item.university || "—")}</td>
-      <td class="col-year">${escapeHtml(String(item.graduationYear || "—"))}</td>
-      ${isLoggedIn ? `
-        <td class="col-actions">
-          <div class="table-actions">
-            ${canManage ? `
-              <button class="btn-action btn-action-edit" onclick="openEditModal(${item.id})" title="${t('btn_edit')}">
-                <i class="fas fa-edit"></i>
-              </button>
-              <button class="btn-action btn-action-danger" onclick="deleteAgronomist(${item.id})" title="${t('btn_delete')}">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            ` : `<span class="text-muted" style="font-size:0.75rem;">—</span>`}
-          </div>
-        </td>
-      ` : ""}
+      <td class="col-actions">
+        <div class="table-actions">
+          <button class="btn-action-view" onclick="openDetailsModal(${item.id})" title="${t('btn_details')}">
+            <i class="fas fa-eye"></i> <span>${t('btn_details')}</span>
+          </button>
+          ${canManage ? `
+            <button class="btn-action btn-action-edit" onclick="openEditModal(${item.id})" title="${t('btn_edit')}">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-action btn-action-danger" onclick="deleteAgronomist(${item.id})" title="${t('btn_delete')}">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          ` : ""}
+        </div>
+      </td>
     `;
     tbody.appendChild(tr);
   });
@@ -685,7 +678,7 @@ function renderCardView(items) {
     const initials = item.fullName.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
 
     card.innerHTML = `
-      <div class="card-top">
+      <div class="card-top" onclick="openDetailsModal(${item.id})" style="cursor: pointer;">
         <div class="card-avatar">${initials}</div>
         <div class="card-meta">
           <h4 class="card-name">${escapeHtml(item.fullName)}</h4>
@@ -696,7 +689,7 @@ function renderCardView(items) {
         </div>
       </div>
 
-      <div class="card-details">
+      <div class="card-details" onclick="openDetailsModal(${item.id})" style="cursor: pointer;">
         <div class="card-detail-item">
           <i class="fas fa-university"></i>
           <span>${escapeHtml(item.university || "—")} (${escapeHtml(String(item.graduationYear || "—"))})</span>
@@ -705,17 +698,14 @@ function renderCardView(items) {
           <i class="fas fa-seedling"></i>
           <span>${escapeHtml(item.direction || "Bog‘dorchilik va uzumchilik maslahati")}</span>
         </div>
-        ${item.birthDate ? `
-          <div class="card-detail-item">
-            <i class="far fa-calendar-alt"></i>
-            <span>${t("th_birth")}: ${escapeHtml(item.birthDate)}</span>
-          </div>
-        ` : ""}
       </div>
 
       <div class="card-actions">
+        <button class="btn-action-view" onclick="openDetailsModal(${item.id})">
+          <i class="fas fa-eye"></i> <span>${t('btn_details')}</span>
+        </button>
         <a href="tel:${escapeHtml(item.phone.replace(/[^+\d]/g, ""))}" class="card-phone-btn">
-          <i class="fas fa-phone-alt"></i> ${escapeHtml(item.phone)}
+          <i class="fas fa-phone-alt"></i> ${escapeHtml(formatShortPhone(item.phone))}
         </a>
         ${canManage ? `
           <button class="btn-action btn-action-edit" onclick="openEditModal(${item.id})" title="${t('btn_edit')}">
@@ -729,6 +719,76 @@ function renderCardView(items) {
     `;
     grid.appendChild(card);
   });
+}
+
+// --------------------------------------------------------------------------
+// MODAL 0: AGRONOMIST DETAILS MODAL (BATAFSIL MA'LUMOT)
+// --------------------------------------------------------------------------
+window.openDetailsModal = function (id) {
+  const item = appState.agronomists.find(a => a.id === id);
+  if (!item) return;
+
+  const getReg = window.I18N ? window.I18N.getRegionName : (r) => r;
+  const localizedRegion = getReg(item.region);
+  const initials = (item.fullName || "AG").split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+  const rawDigits = String(item.phone || "").replace(/[^\d]/g, "");
+  const formattedPhone = formatShortPhone(item.phone);
+
+  document.getElementById("detailsAvatar").textContent = initials;
+  document.getElementById("detailsFullName").textContent = item.fullName || "—";
+  document.getElementById("detailsRegionBadge").textContent = `${localizedRegion}, ${item.district || ""}`;
+
+  const statusBadge = document.getElementById("detailsStatusBadge");
+  if (item.status === "busy") {
+    statusBadge.className = "status-pill status-busy";
+    statusBadge.textContent = "Vaqtincha band";
+  } else if (item.status === "inactive") {
+    statusBadge.className = "status-pill status-inactive";
+    statusBadge.textContent = "Faol emas";
+  } else {
+    statusBadge.className = "status-pill status-active";
+    statusBadge.textContent = "Faol (Maslahat beradi)";
+  }
+
+  const phoneLink = document.getElementById("detailsPhoneLink");
+  phoneLink.href = `tel:+998${rawDigits.slice(-9)}`;
+  document.getElementById("detailsPhoneText").textContent = item.phone ? `+998 ${formattedPhone}` : "—";
+
+  document.getElementById("detailsBirthYear").textContent = formatBirthYear(item.birthDate) ? `${formatBirthYear(item.birthDate)}-yil` : "—";
+  document.getElementById("detailsSpecialization").textContent = item.specialization || "Agronom";
+  document.getElementById("detailsExperience").textContent = item.experience || "—";
+  document.getElementById("detailsUniversity").textContent = item.university || "Ko‘rsatilmagan";
+  document.getElementById("detailsGradYear").textContent = item.graduationYear ? `${item.graduationYear}-yil` : "—";
+  document.getElementById("detailsDirection").textContent = item.direction || "Bog‘dorchilik, tokchilik va intensiv agrotexnika";
+
+  // Edit button in details modal
+  const editBtn = document.getElementById("detailsEditBtn");
+  if (editBtn) {
+    if (canManageItem(item)) {
+      editBtn.style.display = "inline-flex";
+      editBtn.onclick = () => {
+        closeDetailsModal();
+        openAgroModal(item);
+      };
+    } else {
+      editBtn.style.display = "none";
+    }
+  }
+
+  // Consult button in details modal
+  const consultBtn = document.getElementById("detailsConsultBtn");
+  if (consultBtn) {
+    consultBtn.onclick = () => {
+      closeDetailsModal();
+      openConsultModal(item.id);
+    };
+  }
+
+  document.getElementById("detailsModal").hidden = false;
+};
+
+function closeDetailsModal() {
+  document.getElementById("detailsModal").hidden = true;
 }
 
 function renderPagination(totalItems) {
@@ -950,6 +1010,10 @@ function initEventListeners() {
       icon.className = "fas fa-eye";
     }
   });
+
+  // Details Modal
+  document.getElementById("closeDetailsModalBtn")?.addEventListener("click", closeDetailsModal);
+  document.getElementById("closeDetailsBtn")?.addEventListener("click", closeDetailsModal);
 
   // Admin Staff Management Modal
   document.getElementById("openStaffMgmtBtn")?.addEventListener("click", openStaffManagementModal);
