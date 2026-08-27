@@ -1481,9 +1481,60 @@ function initDropzone() {
 }
 
 function handleImportFile(file) {
-  const reader = new FileReader();
+  const isExcel = file.name.endsWith(".xlsx") || file.name.endsWith(".xls");
   const isJson = file.name.endsWith(".json");
 
+  if (isExcel && window.XLSX) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = window.XLSX.read(data, { type: "array" });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const rawRows = window.XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: "" });
+
+        if (!rawRows || rawRows.length < 2) {
+          showToast("Excel faylda ma'lumot topilmadi", "error");
+          return;
+        }
+
+        const parsedRows = [];
+        for (let i = 1; i < rawRows.length; i++) {
+          const cols = rawRows[i];
+          if (!cols || !cols.length) continue;
+          const fullName = String(cols[2] || cols[0] || "").trim();
+          if (!fullName) continue;
+
+          parsedRows.push({
+            region: String(cols[0] || "").trim(),
+            district: String(cols[1] || "").trim(),
+            fullName: fullName,
+            phone: String(cols[3] || "").trim(),
+            birthDate: String(cols[4] || "").trim(),
+            specialization: String(cols[5] || "Agronom").trim(),
+            university: String(cols[6] || "").trim(),
+            graduationYear: cols[7] ? parseInt(cols[7], 10) : null,
+            direction: String(cols[8] || "Bog‘dorchilik va uzumchilik").trim()
+          });
+        }
+
+        if (!parsedRows.length) {
+          showToast("Excel faylda yaroqli yozuvlar topilmadi", "error");
+          return;
+        }
+
+        appState.importQueue = parsedRows;
+        renderImportPreview(parsedRows);
+      } catch (err) {
+        showToast("Excel faylni o‘qishda xatolik yuz berdi: " + err.message, "error");
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    return;
+  }
+
+  const reader = new FileReader();
   reader.onload = (e) => {
     const text = e.target.result;
     let parsedRows = [];
