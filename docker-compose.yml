@@ -10,7 +10,7 @@ services:
       HOST: "0.0.0.0"
       PORT: "8000"
     volumes:
-      - agronomlar_data:/app/data
+      - ./data:/app/data
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -26,7 +26,3 @@ services:
       timeout: 5s
       start_period: 5s
       retries: 3
-
-volumes:
-  agronomlar_data:
-    name: agronomlar-reyestri-data
