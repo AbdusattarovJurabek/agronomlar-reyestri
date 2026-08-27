@@ -115,7 +115,7 @@ const appState = {
   viewMode: "table", // 'table' yoki 'card'
   pagination: {
     page: 1,
-    pageSize: 10
+    pageSize: 20
   },
   importQueue: [],
   currentUser: null,
@@ -520,6 +520,45 @@ function renderResults() {
   renderPagination(total);
 }
 
+function formatFullName(fullName) {
+  if (!fullName) return "—";
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length >= 3) {
+    return `<div class="name-surname">${escapeHtml(parts[0])}</div><div class="name-rest">${escapeHtml(parts.slice(1).join(" "))}</div>`;
+  } else if (parts.length === 2) {
+    return `<div class="name-surname">${escapeHtml(parts[0])}</div><div class="name-rest">${escapeHtml(parts[1])}</div>`;
+  }
+  return `<div class="name-surname">${escapeHtml(fullName)}</div>`;
+}
+
+function formatShortPhone(phone) {
+  if (!phone) return "—";
+  const digits = String(phone).replace(/[^\d]/g, "");
+  let nine = digits;
+  if (digits.startsWith("998") && digits.length >= 12) {
+    nine = digits.slice(3, 12);
+  } else if (digits.length > 9) {
+    nine = digits.slice(-9);
+  }
+  if (nine.length === 9) {
+    return `${nine.slice(0, 2)} ${nine.slice(2, 5)}-${nine.slice(5, 7)}-${nine.slice(7, 9)}`;
+  }
+  return phone;
+}
+
+function formatBirthYear(birthDate) {
+  if (!birthDate) return "—";
+  const str = String(birthDate).trim();
+  const m = str.match(/\b(19\d{2}|20\d{2})\b/);
+  if (m) return m[1];
+  const parts = str.replace(/\//g, '.').split('.');
+  if (parts.length >= 3 && parts[parts.length - 1].length === 2) {
+    const y = parseInt(parts[parts.length - 1], 10);
+    return String(y > 30 ? 1900 + y : 2000 + y);
+  }
+  return str;
+}
+
 function renderTableView(items, startNumber) {
   const tbody = document.getElementById("agronomistsTableBody");
   tbody.innerHTML = "";
@@ -536,6 +575,9 @@ function renderTableView(items, startNumber) {
     const tr = document.createElement("tr");
     const canManage = canManageItem(item);
     const localizedRegion = getReg(item.region);
+    const shortPhone = formatShortPhone(item.phone);
+    const rawDigits = String(item.phone).replace(/[^\d]/g, "");
+    const birthYear = formatBirthYear(item.birthDate);
 
     tr.innerHTML = `
       <td class="col-num">${startNumber + index}</td>
@@ -543,13 +585,13 @@ function renderTableView(items, startNumber) {
         <span class="region-pill">${escapeHtml(localizedRegion)}</span>
       </td>
       <td class="col-district">${escapeHtml(item.district)}</td>
-      <td class="col-name"><strong>${escapeHtml(item.fullName)}</strong></td>
+      <td class="col-name">${formatFullName(item.fullName)}</td>
       <td class="col-phone">
-        <a href="tel:${escapeHtml(item.phone.replace(/[^+\d]/g, ""))}" class="phone-link">
-          <i class="fas fa-phone-alt"></i> ${escapeHtml(item.phone)}
+        <a href="tel:+998${escapeHtml(rawDigits.slice(-9))}" class="phone-link">
+          <i class="fas fa-phone-alt"></i> ${escapeHtml(shortPhone)}
         </a>
       </td>
-      <td class="col-birth">${escapeHtml(item.birthDate || "—")}</td>
+      <td class="col-birth">${escapeHtml(birthYear)}</td>
       <td class="col-spec">${escapeHtml(item.specialization || "Agronom")}</td>
       <td class="col-university" title="${escapeHtml(item.university || "")}">${escapeHtml(item.university || "—")}</td>
       <td class="col-year">${escapeHtml(String(item.graduationYear || "—"))}</td>

@@ -674,7 +674,21 @@ body {
 .col-region { font-weight: 600; color: var(--primary-700); max-width: 150px; }
 [data-theme="dark"] .col-region { color: var(--primary-400); }
 .col-district { font-weight: 600; white-space: nowrap; font-size: 0.8rem; }
-.col-name { font-weight: 700; color: var(--text-main); font-size: 0.83rem; min-width: 140px; }
+.col-name {
+  font-size: 0.8125rem;
+  min-width: 140px;
+  line-height: 1.25;
+}
+.name-surname {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 0.84rem;
+}
+.name-rest {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.77rem;
+}
 .col-phone { white-space: nowrap; }
 .col-phone a {
   display: inline-flex;
