@@ -172,7 +172,7 @@
 
         <!-- Region Dropdown -->
         <div class="filter-field">
-          <label for="regionFilter"><i class="fas fa-map-marker-alt"></i> <span data-i18n="filter_region_label">Ҳудуд номи (Viloyat):</span></label>
+          <label for="regionFilter"><i class="fas fa-map-marker-alt"></i> <span data-i18n="filter_region_label">Ҳудуд:</span></label>
           <select id="regionFilter">
             <option value="" data-i18n="filter_region_all">Barcha hududlar (14 ta)</option>
           </select>
@@ -180,7 +180,7 @@
 
         <!-- District Dropdown -->
         <div class="filter-field">
-          <label for="districtFilter"><i class="fas fa-map-pin"></i> <span data-i18n="filter_district_label">Туман номи:</span></label>
+          <label for="districtFilter"><i class="fas fa-map-pin"></i> <span data-i18n="filter_district_label">Туман:</span></label>
           <select id="districtFilter" disabled>
             <option value="" data-i18n="filter_district_all">Barcha tumanlar</option>
           </select>
@@ -234,15 +234,15 @@
         <thead>
           <tr>
             <th class="col-num" data-i18n="th_num">№</th>
-            <th class="col-region" data-i18n="th_region">Ҳудуд номи</th>
-            <th class="col-district" data-i18n="th_district">Туман номи</th>
+            <th class="col-region" data-i18n="th_region">Ҳудуд</th>
+            <th class="col-district" data-i18n="th_district">Туман</th>
             <th class="col-name" data-i18n="th_fullname">Малакали агроном: Ф.И.Ш.</th>
             <th class="col-phone" data-i18n="th_phone">Телефон рақами</th>
             <th class="col-birth" data-i18n="th_birth">Туғилган йили</th>
             <th class="col-spec" data-i18n="th_spec">Мутахассислиги</th>
             <th class="col-university" data-i18n="th_university">Тамомлаган ўқув юрти</th>
             <th class="col-year" data-i18n="th_grad_year">Тамомлаган йили</th>
-            <th class="col-actions" data-i18n="th_actions">Aloqa / Amal</th>
+            <th class="col-actions" id="thActions" style="display: none;" data-i18n="th_actions">Amallar</th>
           </tr>
         </thead>
         <tbody id="agronomistsTableBody">

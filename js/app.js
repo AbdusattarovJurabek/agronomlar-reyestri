@@ -4,9 +4,26 @@
  * 3-Bosqichli Rol Arxitekturasi & Ko'p Tillilik (UZ, RU, EN)
  */
 
-// O'zbekistonning barcha 14 ta hududi va tumanlari
+// O'zbekistonning barcha 14 ta hududi (Sof hudud nomlari)
+const REGION_LIST = [
+  "Qoraqalpog‘iston",
+  "Andijon",
+  "Buxoro",
+  "Farg‘ona",
+  "Jizzax",
+  "Xorazm",
+  "Namangan",
+  "Navoiy",
+  "Qashqadaryo",
+  "Samarqand",
+  "Sirdaryo",
+  "Surxondaryo",
+  "Toshkent v.",
+  "Toshkent sh."
+];
+
 const UZBEKISTAN_REGIONS = {
-  "Qoraqalpog‘iston Respublikasi": [
+  "Qoraqalpog‘iston": [
     "Amudaryo", "Beruniy", "Chimboy", "Ellikqal’a", "Kegeyli", "Mo‘ynoq",
     "Nukus", "Nukus shahri", "Qonliko‘l", "Qo‘ng‘irot", "Qorao‘zak",
     "Shumanay", "Taxtako‘pir", "To‘rtko‘l", "Xo‘jayli", "Bo‘zatov", "Taxiatosh"
@@ -60,17 +77,30 @@ const UZBEKISTAN_REGIONS = {
     "Muzrabot", "Oltinsoy", "Qiziriq", "Qumqo‘rg‘on", "Sariosiyo", "Sherobod",
     "Sho‘rchi", "Termiz", "Uzun"
   ],
-  "Toshkent viloyati": [
+  "Toshkent v.": [
     "Nurafshon shahri", "Olmaliq shahri", "Angren shahri", "Bekobod shahri",
     "Chirchiq shahri", "Ohangaron shahri", "Yangiyo‘l shahri", "Bekobod",
     "Bo‘stonliq", "Bo‘ka", "Chinoz", "Qibray", "Parkent", "Piskent",
     "Quyi Chirchiq", "O‘rta Chirchiq", "Yuqori Chirchiq", "Yangiyo‘l", "Zangiota", "Toshkent tumani"
   ],
-  "Toshkent shahri": [
+  "Toshkent sh.": [
     "Bektemir", "Chilonzor", "Hamza (Yashnobod)", "Mirobod", "Mirzo Ulug‘bek",
     "Olmazor", "Sergeli", "Shayxontohur", "Uchtepa", "Yakkasaroy", "Yunusobod", "Yangihayot"
   ]
 };
+
+// Eskirgan nomlar uchun moslik (Backward compatibility)
+UZBEKISTAN_REGIONS["Qoraqalpog‘iston Respublikasi"] = UZBEKISTAN_REGIONS["Qoraqalpog‘iston"];
+UZBEKISTAN_REGIONS["Toshkent viloyati"] = UZBEKISTAN_REGIONS["Toshkent v."];
+UZBEKISTAN_REGIONS["Toshkent shahri"] = UZBEKISTAN_REGIONS["Toshkent sh."];
+
+function normalizeRegion(r) {
+  if (!r) return "";
+  if (r.includes("Qoraqalpog")) return "Qoraqalpog‘iston";
+  if (r.includes("Toshkent vil") || r.includes("Toshkent v")) return "Toshkent v.";
+  if (r.includes("Toshkent sh")) return "Toshkent sh.";
+  return r.replace(/\s+viloyati$/i, "").trim();
+}
 
 // Ilova holati (State)
 const appState = {
@@ -240,7 +270,7 @@ function clearCurrentUser() {
 function canManageItem(item) {
   if (!appState.currentUser) return false;
   if (appState.currentUser.role === "admin") return true;
-  return appState.currentUser.region === item.region;
+  return normalizeRegion(appState.currentUser.region) === normalizeRegion(item.region);
 }
 
 // Fetch yordamchisi (Avtomatik token qo'shadi)
@@ -298,16 +328,14 @@ function initRegionDropdowns() {
   if (modalRegion) modalRegion.innerHTML = `<option value="">${t("filter_district_prompt")}</option>`;
   if (newStaffRegion) newStaffRegion.innerHTML = `<option value="">${t("filter_district_prompt")}</option>`;
 
-  const regionNames = Object.keys(UZBEKISTAN_REGIONS);
-
-  regionNames.forEach(region => {
+  REGION_LIST.forEach(region => {
     const localizedName = getReg(region);
 
     if (filterRegion) {
       const opt1 = document.createElement("option");
       opt1.value = region;
       opt1.textContent = localizedName;
-      if (region === currentValFilter) opt1.selected = true;
+      if (normalizeRegion(region) === normalizeRegion(currentValFilter)) opt1.selected = true;
       filterRegion.appendChild(opt1);
     }
 
@@ -315,7 +343,7 @@ function initRegionDropdowns() {
       const opt2 = document.createElement("option");
       opt2.value = region;
       opt2.textContent = localizedName;
-      if (region === currentValModal) opt2.selected = true;
+      if (normalizeRegion(region) === normalizeRegion(currentValModal)) opt2.selected = true;
       modalRegion.appendChild(opt2);
     }
 
@@ -323,7 +351,7 @@ function initRegionDropdowns() {
       const opt3 = document.createElement("option");
       opt3.value = region;
       opt3.textContent = localizedName;
-      if (region === currentValStaff) opt3.selected = true;
+      if (normalizeRegion(region) === normalizeRegion(currentValStaff)) opt3.selected = true;
       newStaffRegion.appendChild(opt3);
     }
   });
@@ -335,9 +363,10 @@ function initRegionDropdowns() {
     if (!districtSelect) return;
 
     districtSelect.innerHTML = `<option value="">${t("filter_district_all")}</option>`;
-    if (selectedRegion && UZBEKISTAN_REGIONS[selectedRegion]) {
+    const distList = UZBEKISTAN_REGIONS[selectedRegion] || UZBEKISTAN_REGIONS[normalizeRegion(selectedRegion)];
+    if (distList && distList.length) {
       districtSelect.disabled = false;
-      UZBEKISTAN_REGIONS[selectedRegion].forEach(dist => {
+      distList.forEach(dist => {
         const opt = document.createElement("option");
         opt.value = dist;
         opt.textContent = dist;
@@ -365,9 +394,10 @@ function updateDistrictOptionsForModal(selectedRegion, selectedDistrict = "") {
   const t = window.I18N ? window.I18N.t : (k) => k;
 
   districtSelect.innerHTML = `<option value="">${t("filter_district_prompt")}</option>`;
-  if (selectedRegion && UZBEKISTAN_REGIONS[selectedRegion]) {
+  const distList = UZBEKISTAN_REGIONS[selectedRegion] || UZBEKISTAN_REGIONS[normalizeRegion(selectedRegion)];
+  if (distList && distList.length) {
     districtSelect.disabled = false;
-    UZBEKISTAN_REGIONS[selectedRegion].forEach(dist => {
+    distList.forEach(dist => {
       const opt = document.createElement("option");
       opt.value = dist;
       opt.textContent = dist;
@@ -418,7 +448,11 @@ function applyFilters() {
   const { q, region, district, specialization } = appState.filters;
 
   appState.filtered = appState.agronomists.filter(item => {
-    if (region && item.region !== region) return false;
+    if (region) {
+      const normFilter = normalizeRegion(region);
+      const normItem = normalizeRegion(item.region);
+      if (normFilter !== normItem && item.region !== region) return false;
+    }
     if (district && item.district !== district) return false;
 
     if (specialization) {
@@ -491,6 +525,12 @@ function renderTableView(items, startNumber) {
   tbody.innerHTML = "";
   const t = window.I18N ? window.I18N.t : (k) => k;
   const getReg = window.I18N ? window.I18N.getRegionName : (r) => r;
+  const isLoggedIn = !!appState.currentUser;
+  const thActions = document.getElementById("thActions");
+
+  if (thActions) {
+    thActions.style.display = isLoggedIn ? "" : "none";
+  }
 
   items.forEach((item, index) => {
     const tr = document.createElement("tr");
@@ -513,21 +553,20 @@ function renderTableView(items, startNumber) {
       <td class="col-spec">${escapeHtml(item.specialization || "Agronom")}</td>
       <td class="col-university" title="${escapeHtml(item.university || "")}">${escapeHtml(item.university || "—")}</td>
       <td class="col-year">${escapeHtml(String(item.graduationYear || "—"))}</td>
-      <td class="col-actions">
-        <div class="table-actions">
-          <button class="btn-action btn-action-primary" onclick="openConsultModal(${item.id})" title="${t('btn_consult')}">
-            <i class="fas fa-comment-dots"></i> ${t('btn_consult')}
-          </button>
-          ${canManage ? `
-            <button class="btn-action btn-action-edit" onclick="openEditModal(${item.id})" title="${t('btn_edit')}">
-              <i class="fas fa-edit"></i>
-            </button>
-            <button class="btn-action btn-action-danger" onclick="deleteAgronomist(${item.id})" title="${t('btn_delete')}">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-          ` : ""}
-        </div>
-      </td>
+      ${isLoggedIn ? `
+        <td class="col-actions">
+          <div class="table-actions">
+            ${canManage ? `
+              <button class="btn-action btn-action-edit" onclick="openEditModal(${item.id})" title="${t('btn_edit')}">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn-action btn-action-danger" onclick="deleteAgronomist(${item.id})" title="${t('btn_delete')}">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            ` : `<span class="text-muted" style="font-size:0.75rem;">—</span>`}
+          </div>
+        </td>
+      ` : ""}
     `;
     tbody.appendChild(tr);
   });
@@ -579,9 +618,6 @@ function renderCardView(items) {
         <a href="tel:${escapeHtml(item.phone.replace(/[^+\d]/g, ""))}" class="card-phone-btn">
           <i class="fas fa-phone-alt"></i> ${escapeHtml(item.phone)}
         </a>
-        <button class="btn-action btn-action-primary" onclick="openConsultModal(${item.id})">
-          <i class="fas fa-comments"></i> ${t("btn_consult")}
-        </button>
         ${canManage ? `
           <button class="btn-action btn-action-edit" onclick="openEditModal(${item.id})" title="${t('btn_edit')}">
             <i class="fas fa-edit"></i>
