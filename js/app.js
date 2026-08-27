@@ -96,10 +96,11 @@ UZBEKISTAN_REGIONS["Toshkent shahri"] = UZBEKISTAN_REGIONS["Toshkent sh."];
 
 function normalizeRegion(r) {
   if (!r) return "";
-  if (r.includes("Qoraqalpog")) return "Qoraqalpog‘iston";
-  if (r.includes("Toshkent vil") || r.includes("Toshkent v")) return "Toshkent v.";
-  if (r.includes("Toshkent sh")) return "Toshkent sh.";
-  return r.replace(/\s+viloyati$/i, "").trim();
+  const s = String(r).trim();
+  if (s.includes("Qoraqalpog")) return "Qoraqalpog‘iston";
+  if (s.includes("Toshkent vil") || s.includes("Toshkent v")) return "Toshkent v.";
+  if (s.includes("Toshkent sh")) return "Toshkent sh.";
+  return s.replace(/\s+(viloyati|Respublikasi)$/i, "").trim();
 }
 
 // Ilova holati (State)

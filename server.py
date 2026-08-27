@@ -350,6 +350,19 @@ class ValidationError(ValueError):
     pass
 
 
+def normalize_region_py(r: Optional[str]) -> str:
+    if not r:
+        return ""
+    r_str = str(r).strip()
+    if "Qoraqalpog" in r_str:
+        return "Qoraqalpog‘iston"
+    if "Toshkent vil" in r_str or "Toshkent v" in r_str:
+        return "Toshkent v."
+    if "Toshkent sh" in r_str:
+        return "Toshkent sh."
+    return re.sub(r"\s+(viloyati|Respublikasi)$", "", r_str, flags=re.IGNORECASE).strip()
+
+
 def read_json(path: Path, default: Any) -> Any:
     with _file_lock:
         if not path.exists():
@@ -975,7 +988,7 @@ class AgronomistPortalHandler(SimpleHTTPRequestHandler):
 
         # Permission check: Regional operator can only update their own region's records
         if user.get("role") != "admin":
-            if existing.get("region") != user.get("region"):
+            if normalize_region_py(existing.get("region")) != normalize_region_py(user.get("region")):
                 self.send_json(403, {
                     "ok": False,
                     "error": f"Siz faqat o‘z hududingiz ({user.get('region')}) agronomlarini tahrirlashingiz mumkin"
@@ -1053,7 +1066,7 @@ class AgronomistPortalHandler(SimpleHTTPRequestHandler):
 
         # Permission check: Regional operator can only delete their own region's records
         if user.get("role") != "admin":
-            if existing.get("region") != user.get("region"):
+            if normalize_region_py(existing.get("region")) != normalize_region_py(user.get("region")):
                 self.send_json(403, {
                     "ok": False,
                     "error": f"Siz faqat o‘z hududingiz ({user.get('region')}) agronomlarini o‘chirishingiz mumkin"
