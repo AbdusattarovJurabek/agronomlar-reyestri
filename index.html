@@ -92,7 +92,7 @@
         <div class="hero-tag">
           <i class="fas fa-apple-whole"></i> <span data-i18n="hero_tag">Bog‘dorchilik va Uzumchilik Yo‘nalishida Axborot Portali</span>
         </div>
-        <h2 class="hero-title" data-i18n="hero_title">Республикада фаолият юритаётган малакали агрономлар РЎЙХАТИ</h2>
+        <h2 class="hero-title" data-i18n="hero_title">Respublikada faoliyat yuritayotgan malakali agronomlar RO‘YXATI</h2>
         <p class="hero-desc" data-i18n="hero_desc">
           Agrosanoatni rivojlantirish agentligining viloyat boshqarmalari va hududiy mutaxassislari tomonidan yuritiluvchi intensiv bog‘dorchilik, tokchilik, tomchilatib sug‘orish va agrotexnika bo‘yicha malakali agronom-maslahatchilar yagona elektron bazasi.
         </p>
@@ -172,7 +172,7 @@
 
         <!-- Region Dropdown -->
         <div class="filter-field">
-          <label for="regionFilter"><i class="fas fa-map-marker-alt"></i> <span data-i18n="filter_region_label">Ҳудуд:</span></label>
+          <label for="regionFilter"><i class="fas fa-map-marker-alt"></i> <span data-i18n="filter_region_label">Hudud:</span></label>
           <select id="regionFilter">
             <option value="" data-i18n="filter_region_all">Barcha hududlar (14 ta)</option>
           </select>
@@ -180,7 +180,7 @@
 
         <!-- District Dropdown -->
         <div class="filter-field">
-          <label for="districtFilter"><i class="fas fa-map-pin"></i> <span data-i18n="filter_district_label">Туман:</span></label>
+          <label for="districtFilter"><i class="fas fa-map-pin"></i> <span data-i18n="filter_district_label">Tuman:</span></label>
           <select id="districtFilter" disabled>
             <option value="" data-i18n="filter_district_all">Barcha tumanlar</option>
           </select>
@@ -234,14 +234,14 @@
         <thead>
           <tr>
             <th class="col-num" data-i18n="th_num">№</th>
-            <th class="col-region" data-i18n="th_region">Ҳудуд</th>
-            <th class="col-district" data-i18n="th_district">Туман</th>
-            <th class="col-name" data-i18n="th_fullname">Малакали агроном: Ф.И.Ш.</th>
-            <th class="col-phone" data-i18n="th_phone">Телефон рақами</th>
-            <th class="col-birth" data-i18n="th_birth">Туғилган йили</th>
-            <th class="col-spec" data-i18n="th_spec">Мутахассислиги</th>
-            <th class="col-university" data-i18n="th_university">Тамомлаган ўқув юрти</th>
-            <th class="col-year" data-i18n="th_grad_year">Тамомлаган йили</th>
+            <th class="col-region" data-i18n="th_region">Hudud</th>
+            <th class="col-district" data-i18n="th_district">Tuman</th>
+            <th class="col-name" data-i18n="th_fullname">Malakali agronom: F.I.SH.</th>
+            <th class="col-phone" data-i18n="th_phone">Telefon raqami</th>
+            <th class="col-birth" data-i18n="th_birth">Tug‘ilgan yili</th>
+            <th class="col-spec" data-i18n="th_spec">Mutaxassisligi</th>
+            <th class="col-university" data-i18n="th_university">Tamomlagan o‘quv yurti</th>
+            <th class="col-year" data-i18n="th_grad_year">Tamomlagan yili</th>
             <th class="col-actions" id="thActions" style="display: none;" data-i18n="th_actions">Amallar</th>
           </tr>
         </thead>
@@ -296,7 +296,7 @@
         <div class="form-grid">
           <!-- Region -->
           <div class="form-group">
-            <label for="agroRegion"><span data-i18n="lbl_region">Ҳудуд номи (Viloyat)</span> <span class="req">*</span></label>
+            <label for="agroRegion"><span data-i18n="lbl_region">Hudud</span> <span class="req">*</span></label>
             <select id="agroRegion" required>
               <option value="" data-i18n="filter_district_prompt">-- Viloyatni tanlang --</option>
             </select>
@@ -304,7 +304,7 @@
 
           <!-- District -->
           <div class="form-group">
-            <label for="agroDistrict"><span data-i18n="lbl_district">Туман номи</span> <span class="req">*</span></label>
+            <label for="agroDistrict"><span data-i18n="lbl_district">Tuman</span> <span class="req">*</span></label>
             <select id="agroDistrict" required disabled>
               <option value="" data-i18n="filter_district_prompt">-- Avval viloyatni tanlang --</option>
             </select>
@@ -312,37 +312,37 @@
 
           <!-- Full Name -->
           <div class="form-group form-col-2">
-            <label for="agroFullName"><span data-i18n="lbl_fullname">Малакали агроном: Фамилия, исми ва отасининг исми</span> <span class="req">*</span></label>
+            <label for="agroFullName"><span data-i18n="lbl_fullname">Malakali agronom: Familiya, ismi va otasining ismi</span> <span class="req">*</span></label>
             <input type="text" id="agroFullName" placeholder="Masalan: Sulaymonov Abdumutallib Ko‘chqarovich" required minlength="3" maxlength="150">
           </div>
 
           <!-- Phone -->
           <div class="form-group">
-            <label for="agroPhone"><span data-i18n="lbl_phone">Телефон рақами</span> <span class="req">*</span></label>
-            <input type="text" id="agroPhone" placeholder="+998 90 123-45-67 yoki 99-467-96-67" required>
+            <label for="agroPhone"><span data-i18n="lbl_phone">Telefon raqami</span> <span class="req">*</span></label>
+            <input type="text" id="agroPhone" placeholder="Masalan: 99 467-96-67" required>
           </div>
 
           <!-- Birth Date/Year -->
           <div class="form-group">
-            <label for="agroBirthDate"><span data-i18n="lbl_birth">Туғилган кун, ой ва йили</span></label>
-            <input type="text" id="agroBirthDate" placeholder="Masalan: 1967 yoki 26.07.1958">
+            <label for="agroBirthDate"><span data-i18n="lbl_birth">Tug‘ilgan yili</span></label>
+            <input type="text" id="agroBirthDate" placeholder="Masalan: 1967">
           </div>
 
           <!-- Specialization -->
           <div class="form-group">
-            <label for="agroSpecialization"><span data-i18n="lbl_spec">Мутахассислиги</span> <span class="req">*</span></label>
+            <label for="agroSpecialization"><span data-i18n="lbl_spec">Mutaxassisligi</span> <span class="req">*</span></label>
             <input type="text" id="agroSpecialization" placeholder="Masalan: Agronom, Bog‘bon-agronom, Uzumchi" value="Agronom" required>
           </div>
 
           <!-- Graduation Year -->
           <div class="form-group">
-            <label for="agroGradYear"><span data-i18n="lbl_grad_year">Тамомлаган йили</span></label>
+            <label for="agroGradYear"><span data-i18n="lbl_grad_year">Tamomlagan yili</span></label>
             <input type="number" id="agroGradYear" placeholder="Masalan: 1996" min="1940" max="2050">
           </div>
 
           <!-- University -->
           <div class="form-group form-col-2">
-            <label for="agroUniversity"><span data-i18n="lbl_university">Тамомлаган ўқув юрти</span></label>
+            <label for="agroUniversity"><span data-i18n="lbl_university">Tamomlagan o‘quv yurti</span></label>
             <input type="text" id="agroUniversity" placeholder="Masalan: Toshkent Davlat Agrar Universiteti">
           </div>
 
@@ -402,7 +402,7 @@
           <p data-i18n="modal_import_guide">
             Excel yoki CSV fayldan agronomlar ro‘yxatini bir zumda bazaga yuklang. Ustunlar tartibi:
           </p>
-          <code>Ҳудуд номи | Туман номи | Ф.И.Ш. | Телефон рақами | Туғилган йили | Мутахассислиги | Ўқув юрти | Тамомлаган йили</code>
+          <code>Hudud | Tuman | F.I.SH. | Telefon raqami | Tug‘ilgan yili | Mutaxassisligi | O‘quv yurti | Tamomlagan yili</code>
           <div class="template-download-row">
             <a href="#" id="downloadTemplateBtn" class="template-link"><i class="fas fa-download"></i> <span data-i18n="btn_download_template">Namuna CSV shablonini yuklab olish</span></a>
           </div>
@@ -428,12 +428,12 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th data-i18n="th_region">Ҳудуд</th>
-                  <th data-i18n="th_district">Туман</th>
-                  <th data-i18n="th_fullname">Ф.И.Ш.</th>
-                  <th data-i18n="th_phone">Телефон</th>
-                  <th data-i18n="th_spec">Мутахассислик</th>
-                  <th data-i18n="th_university">Ўқув юрти</th>
+                  <th data-i18n="th_region">Hudud</th>
+                  <th data-i18n="th_district">Tuman</th>
+                  <th data-i18n="th_fullname">F.I.SH.</th>
+                  <th data-i18n="th_phone">Telefon</th>
+                  <th data-i18n="th_spec">Mutaxassislik</th>
+                  <th data-i18n="th_university">O‘quv yurti</th>
                 </tr>
               </thead>
               <tbody id="previewTableBody"></tbody>
@@ -617,7 +617,7 @@
               <thead>
                 <tr>
                   <th data-i18n="th_staff_num">№</th>
-                  <th data-i18n="th_staff_region">Ҳудуд номи</th>
+                  <th data-i18n="th_staff_region">Hudud</th>
                   <th data-i18n="th_staff_login">Login</th>
                   <th data-i18n="th_staff_password">Parol</th>
                   <th data-i18n="th_staff_name">F.I.SH. / Lavozimi</th>

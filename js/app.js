@@ -1505,9 +1505,9 @@ function initDropzone() {
   // Download Sample Template
   templateBtn?.addEventListener("click", (e) => {
     e.preventDefault();
-    const csvContent = "\ufeffҲудуд номи;Туман номи;Малакали агроном Ф.И.Ш.;Телефон рақами;Туғилган йили;Мутахассислиги;Тамомлаган ўқув юрти;Тамомлаган йили;Maslahat yo‘nalishi\n" +
-      "Андижон;Пахтаобод;Темиров Омаджон Азимович;+998 97 982-82-27;1982;Агроном;Андижон қишлоқ хўжалиги институти;2026;Боғдорчилик ва ўсимликлар ҳимояси\n" +
-      "Қорақалпоғистон Республикаси;Нукус;Алламбергенов Джахан;+998 99 467-96-67;1967;Агроном;Тошкент Давлат Аграр Университети;1992;Боғдорчилик ва интенсив экинlar";
+    const csvContent = "\ufeffHudud;Tuman;F.I.SH.;Telefon raqami;Tug‘ilgan yili;Mutaxassisligi;Tamomlagan o‘quv yurti;Tamomlagan yili;Maslahat yo‘nalishi\n" +
+      "Andijon;Paxtaobod;Temirov Omadjon Azimovich;97 982-82-27;1982;Agronom;Andijon qishloq xo‘jaligi instituti;2026;Bog‘dorchilik va intensiv agrotexnika\n" +
+      "Qoraqalpog‘iston;Nukus;Allambergenov Djaxan;99 467-96-67;1967;Agronom;Toshkent Davlat Agrar Universiteti;1992;Bog‘dorchilik va tokchilik";
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
