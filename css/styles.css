@@ -1698,6 +1698,68 @@ body {
   outline: none;
 }
 
+/* Captcha Component */
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.captcha-image-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-subtle);
+  padding: 3px 5px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.captcha-canvas {
+  width: 120px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  cursor: pointer;
+  display: block;
+}
+
+[data-theme="dark"] .captcha-canvas {
+  background: #1e293b;
+}
+
+.btn-refresh-captcha {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.2s ease;
+}
+
+.btn-refresh-captcha:hover {
+  color: var(--primary-600);
+  transform: rotate(90deg);
+}
+
+.captcha-input-wrap {
+  flex: 1;
+}
+
+.captcha-input-wrap input {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-align: center;
+  padding-left: 2.2rem !important;
+}
+
 .login-footer {
   padding: 1.1rem 1.5rem;
   background: var(--bg-subtle);

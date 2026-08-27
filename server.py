@@ -1092,7 +1092,7 @@ def main() -> None:
     server = ThreadingHTTPServer((host, port), AgronomistPortalHandler)
     print(f"============================================================")
     print(f" 🌿 AGROSANOATNI RIVOJLANTIRISH AGENTLIGI")
-    print(f" 🌾 Malakali Agronomlar Milliy Reyestri va Axborot Tizimi")
+    print(f" 🌾 Malakali Agronomlar Milliy Reyestri")
     print(f" 👥 3-Bosqichli Rol Arxitekturasi: Mehmon | Viloyat Xodimi | Admin")
     print(f" 🚀 Server ishga tushdi: http://{host}:{port}")
     print(f"============================================================")

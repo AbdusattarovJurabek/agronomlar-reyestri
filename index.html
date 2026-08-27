@@ -72,14 +72,14 @@
         </div>
         <div class="brand-text">
           <h1 data-i18n="brand_title">AGROSANOATNI RIVOJLANTIRISH AGENTLIGI</h1>
-          <span data-i18n="brand_subtitle">MALAKALI AGRONOMLAR MILLIY REYESTRI VA AXBOROT TIZIMI</span>
+          <span data-i18n="brand_subtitle">MALAKALI AGRONOMLAR MILLIY REYESTRI</span>
         </div>
       </div>
       <div class="header-badge">
         <i class="fas fa-shield-alt"></i>
         <div>
           <strong data-i18n="badge_official">Rasmiy Reyestr</strong>
-          <small data-i18n="badge_agency_system">Agentlik Axborot Tizimi</small>
+          <small data-i18n="badge_agency_system">Agentlik Portali</small>
         </div>
       </div>
     </div>
@@ -552,6 +552,23 @@
           </div>
         </div>
 
+        <!-- Captcha Security Verification -->
+        <div class="form-group login-field captcha-group">
+          <label for="loginCaptcha"><i class="fas fa-shield-halved"></i> <span data-i18n="lbl_captcha">Xavfsizlik kodi (Kapcha)</span> <span class="req">*</span></label>
+          <div class="captcha-container">
+            <div class="captcha-image-wrapper">
+              <canvas id="loginCaptchaCanvas" width="130" height="42" class="captcha-canvas" title="Kodni yangilash uchun bosing"></canvas>
+              <button type="button" class="btn-refresh-captcha" id="refreshCaptchaBtn" title="Kapchani yangilash">
+                <i class="fas fa-rotate-right"></i>
+              </button>
+            </div>
+            <div class="input-icon-wrap captcha-input-wrap">
+              <i class="fas fa-barcode input-lead-icon"></i>
+              <input type="text" id="loginCaptcha" placeholder="Kodni kiriting" required maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+          </div>
+        </div>
+
         <div class="modal-status-message" id="loginStatusMessage" hidden></div>
 
         <div class="modal-footer login-footer">
@@ -702,7 +719,7 @@
         </div>
         <div>
           <h4 data-i18n="footer_title">O‘zbekiston Respublikasi Agrosanoatni rivojlantirish agentligi</h4>
-          <p data-i18n="footer_subtitle">Malakali agronomlar milliy reyestri va axborot tizimi.</p>
+          <p data-i18n="footer_subtitle">Malakali agronomlar milliy reyestri.</p>
         </div>
       </div>
       <div class="footer-meta">

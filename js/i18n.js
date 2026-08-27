@@ -13,9 +13,9 @@ const I18N_TRANSLATIONS = {
     btn_logout: "Chiqish",
     badge_staff: "Agentlik xodimi",
     badge_official: "Rasmiy Reyestr",
-    badge_agency_system: "Agentlik Axborot Tizimi",
+    badge_agency_system: "Agentlik Portali",
     brand_title: "AGROSANOATNI RIVOJLANTIRISH AGENTLIGI",
-    brand_subtitle: "MALAKALI AGRONOMLAR MILLIY REYESTRI VA AXBOROT TIZIMI",
+    brand_subtitle: "MALAKALI AGRONOMLAR MILLIY REYESTRI",
 
     // Hero Section
     hero_tag: "Bog‘dorchilik va Uzumchilik Yo‘nalishida Axborot Portali",
@@ -127,9 +127,12 @@ const I18N_TRANSLATIONS = {
 
     // Modal 4: Login
     modal_login_title: "Tizimga Kirish",
-    login_intro: "Agrosanoatni rivojlantirish agentligi viloyat mas'ul xodimi yoki Bosh Administrator hisobingiz orqali kiring:",
+    login_intro: "Viloyat boshqarmasi mas'ul xodimi yoki Bosh Administrator hisobingiz orqali tizimga kiring:",
     lbl_login_username: "Login",
     lbl_login_password: "Parol",
+    lbl_captcha: "Xavfsizlik kodi (Kapcha)",
+    captcha_placeholder: "Kodni kiriting",
+    err_captcha: "Xavfsizlik kodi (kapcha) noto‘g‘ri kiritildi",
     btn_submit_login: "Kirish",
 
     // Modal 5: Staff Management (Admin)
@@ -160,7 +163,7 @@ const I18N_TRANSLATIONS = {
 
     // Footer
     footer_title: "O‘zbekiston Respublikasi Agrosanoatni rivojlantirish agentligi",
-    footer_subtitle: "Malakali agronomlar milliy reyestri va axborot tizimi.",
+    footer_subtitle: "Malakali agronomlar milliy reyestri.",
     footer_copy: "© 2026 Barcha huquqlar himoyalangan."
   },
 
@@ -173,9 +176,9 @@ const I18N_TRANSLATIONS = {
     btn_logout: "Выход",
     badge_staff: "Сотрудник Агентства",
     badge_official: "Официальный реестр",
-    badge_agency_system: "Информационная система Агентства",
+    badge_agency_system: "Портал Агентства",
     brand_title: "АГЕНТСТВО ПО РАЗВИТИЮ АГРОПРОМЫШЛЕННОСТИ",
-    brand_subtitle: "НАЦИОНАЛЬНЫЙ РЕЕСТР КВАЛИФИЦИРОВАННЫХ АГРОНОМОВ И ИНФОРМАЦИОННАЯ СИСТЕМА",
+    brand_subtitle: "НАЦИОНАЛЬНЫЙ РЕЕСТР КВАЛИФИЦИРОВАННЫХ АГРОНОМОВ",
 
     // Hero Section
     hero_tag: "Информационный портал по садоводству и виноградарству",
@@ -290,6 +293,9 @@ const I18N_TRANSLATIONS = {
     login_intro: "Войдите с учетной записью ответственного сотрудника Агентства или Главного Администратора:",
     lbl_login_username: "Логин",
     lbl_login_password: "Пароль",
+    lbl_captcha: "Код безопасности (Капча)",
+    captcha_placeholder: "Введите код",
+    err_captcha: "Неверный код безопасности (капча)",
     btn_submit_login: "Войти",
 
     // Modal 5: Staff Management (Admin)
@@ -320,7 +326,7 @@ const I18N_TRANSLATIONS = {
 
     // Footer
     footer_title: "Агентство по развитию агропромышленности Республики Узбекистан",
-    footer_subtitle: "Национальный реестр квалифицированных агрономов и информационная система.",
+    footer_subtitle: "Национальный реестр квалифицированных агрономов.",
     footer_copy: "© 2026 Все права защищены."
   },
 
@@ -333,9 +339,9 @@ const I18N_TRANSLATIONS = {
     btn_logout: "Sign Out",
     badge_staff: "Agency Staff",
     badge_official: "Official Registry",
-    badge_agency_system: "Agency Information System",
+    badge_agency_system: "Agency Portal",
     brand_title: "AGRO-INDUSTRY DEVELOPMENT AGENCY",
-    brand_subtitle: "NATIONAL REGISTRY OF QUALIFIED AGRONOMISTS AND INFORMATION SYSTEM",
+    brand_subtitle: "NATIONAL REGISTRY OF QUALIFIED AGRONOMISTS",
 
     // Hero Section
     hero_tag: "Horticulture and Viticulture Information Portal",
@@ -384,36 +390,36 @@ const I18N_TRANSLATIONS = {
     th_num: "№",
     th_region: "Region",
     th_district: "District",
-    th_fullname: "Agronomist Full Name",
+    th_fullname: "Qualified Agronomist: Full Name",
     th_phone: "Phone Number",
     th_birth: "Birth Year",
     th_spec: "Specialization",
-    th_university: "University / Institution",
+    th_university: "Graduated University",
     th_grad_year: "Graduation Year",
     th_actions: "Actions",
     btn_consult: "Consult",
     btn_edit: "Edit",
     btn_delete: "Delete",
-    empty_title: "No Records Found",
-    empty_desc: "No qualified agronomists match your search criteria or selected filters.",
+    empty_title: "No records found",
+    empty_desc: "No qualified agronomists match your search query or selected filters.",
 
     // Modal 1: Add / Edit Agronomist
-    modal_agro_add_title: "Register New Qualified Agronomist",
-    modal_agro_edit_title: "Edit Agronomist Information",
+    modal_agro_add_title: "Add New Qualified Agronomist",
+    modal_agro_edit_title: "Edit Agronomist Details",
     modal_agro_region_lock: "Assigned Region:",
-    modal_agro_region_lock_note: "(locked to your jurisdiction)",
-    lbl_region: "Region (Province)",
+    modal_agro_region_lock_note: "(you can only add to your region)",
+    lbl_region: "Region",
     lbl_district: "District",
     lbl_fullname: "Qualified Agronomist: Full Name",
     lbl_phone: "Phone Number",
-    lbl_birth: "Date / Year of Birth",
+    lbl_birth: "Birth Year",
     lbl_spec: "Specialization",
-    lbl_university: "Graduated University / Institution",
+    lbl_university: "Graduated University",
     lbl_grad_year: "Graduation Year",
-    lbl_direction: "Consultation Field & Specialty",
+    lbl_direction: "Consultation Area and Expertise",
     lbl_experience: "Work Experience",
     lbl_status: "Status",
-    opt_status_active: "Active (Providing Advice)",
+    opt_status_active: "Active (Available for consult)",
     opt_status_busy: "Temporarily Busy",
     opt_status_inactive: "Inactive",
     btn_cancel: "Cancel",
@@ -450,6 +456,9 @@ const I18N_TRANSLATIONS = {
     login_intro: "Sign in with your Regional Agency Staff or Chief Administrator credentials:",
     lbl_login_username: "Username",
     lbl_login_password: "Password",
+    lbl_captcha: "Security Code (Captcha)",
+    captcha_placeholder: "Enter code",
+    err_captcha: "Invalid security code (captcha)",
     btn_submit_login: "Sign In",
 
     // Modal 5: Staff Management (Admin)
@@ -480,7 +489,7 @@ const I18N_TRANSLATIONS = {
 
     // Footer
     footer_title: "Agro-industry Development Agency of the Republic of Uzbekistan",
-    footer_subtitle: "National registry of qualified agronomists and information system.",
+    footer_subtitle: "National registry of qualified agronomists.",
     footer_copy: "© 2026 All rights reserved."
   }
 };

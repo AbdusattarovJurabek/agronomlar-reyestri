@@ -933,6 +933,8 @@ function initEventListeners() {
   document.getElementById("closeLoginModalBtn")?.addEventListener("click", closeLoginModal);
   document.getElementById("cancelLoginBtn")?.addEventListener("click", closeLoginModal);
   document.getElementById("loginForm")?.addEventListener("submit", handleLoginSubmit);
+  document.getElementById("refreshCaptchaBtn")?.addEventListener("click", renderLoginCaptcha);
+  document.getElementById("loginCaptchaCanvas")?.addEventListener("click", renderLoginCaptcha);
 
   document.getElementById("logoutBtn")?.addEventListener("click", handleLogout);
 
@@ -1007,10 +1009,86 @@ function initEventListeners() {
 // --------------------------------------------------------------------------
 // LOGIN & LOGOUT HANDLERS
 // --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// CAPTCHA VERIFICATION SYSTEM
+// --------------------------------------------------------------------------
+let currentLoginCaptcha = "";
+
+function generateCaptchaText(len = 4) {
+  const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+  let res = "";
+  for (let i = 0; i < len; i++) {
+    res += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return res;
+}
+
+function renderLoginCaptcha() {
+  const canvas = document.getElementById("loginCaptchaCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  currentLoginCaptcha = generateCaptchaText(4);
+
+  const w = canvas.width;
+  const h = canvas.height;
+
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  ctx.fillStyle = isDark ? "#1e293b" : "#f1f5f9";
+  ctx.fillRect(0, 0, w, h);
+
+  // Background noise lines
+  for (let i = 0; i < 4; i++) {
+    ctx.strokeStyle = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)";
+    ctx.lineWidth = 1 + Math.random();
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * w, Math.random() * h);
+    ctx.lineTo(Math.random() * w, Math.random() * h);
+    ctx.stroke();
+  }
+
+  // Draw characters
+  const charColors = isDark
+    ? ["#34d399", "#60a5fa", "#f472b6", "#fbbf24"]
+    : ["#059669", "#2563eb", "#db2777", "#d97706"];
+
+  ctx.font = "bold 20px 'JetBrains Mono', Consolas, monospace";
+  ctx.textBaseline = "middle";
+
+  const spacing = w / (currentLoginCaptcha.length + 1);
+  for (let i = 0; i < currentLoginCaptcha.length; i++) {
+    const char = currentLoginCaptcha[i];
+    ctx.save();
+    const x = spacing * (i + 1) + (Math.random() * 4 - 2);
+    const y = h / 2 + (Math.random() * 4 - 2);
+    const angle = (Math.random() * 24 - 12) * (Math.PI / 180);
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.fillStyle = charColors[i % charColors.length];
+    ctx.fillText(char, -7, 0);
+    ctx.restore();
+  }
+
+  // Foreground noise dots
+  for (let i = 0; i < 18; i++) {
+    ctx.fillStyle = isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.18)";
+    ctx.beginPath();
+    ctx.arc(Math.random() * w, Math.random() * h, 1, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const captchaInput = document.getElementById("loginCaptcha");
+  if (captchaInput) {
+    captchaInput.value = "";
+  }
+}
+
 function openLoginModal() {
   document.getElementById("loginStatusMessage").hidden = true;
   document.getElementById("loginForm").reset();
   document.getElementById("loginModal").hidden = false;
+  renderLoginCaptcha();
   setTimeout(() => document.getElementById("loginUsername")?.focus(), 100);
 }
 
@@ -1022,8 +1100,23 @@ async function handleLoginSubmit(e) {
   e.preventDefault();
   const username = document.getElementById("loginUsername").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
+  const captcha = (document.getElementById("loginCaptcha")?.value || "").trim().toUpperCase();
   const statusEl = document.getElementById("loginStatusMessage");
   const submitBtn = document.getElementById("submitLoginBtn");
+  const t = window.I18N ? window.I18N.t : (k) => k;
+
+  // Verify Captcha
+  if (!captcha || captcha !== currentLoginCaptcha) {
+    statusEl.className = "modal-status-message error";
+    statusEl.textContent = t("err_captcha") || "Xavfsizlik kodi (kapcha) noto‘g‘ri kiritildi";
+    statusEl.hidden = false;
+    renderLoginCaptcha();
+    const capInp = document.getElementById("loginCaptcha");
+    if (capInp) {
+      capInp.focus();
+    }
+    return;
+  }
 
   submitBtn.disabled = true;
   submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Tekshirilmoqda…';
@@ -1045,14 +1138,16 @@ async function handleLoginSubmit(e) {
       statusEl.className = "modal-status-message error";
       statusEl.textContent = data.error || "Login yoki parol noto‘g‘ri";
       statusEl.hidden = false;
+      renderLoginCaptcha();
     }
   } catch (err) {
     statusEl.className = "modal-status-message error";
     statusEl.textContent = "Server bilan bog‘lanishda xatolik";
     statusEl.hidden = false;
+    renderLoginCaptcha();
   } finally {
     submitBtn.disabled = false;
-    submitBtn.innerHTML = `<i class="fas fa-arrow-right-to-bracket"></i> <span>${window.I18N ? window.I18N.t('btn_submit_login') : 'Kirish'}</span>`;
+    submitBtn.innerHTML = `<i class="fas fa-right-to-bracket"></i> <span>${t('btn_submit_login')}</span>`;
   }
 }
 
