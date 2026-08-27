@@ -1,0 +1,32 @@
+services:
+  agronomlar-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agronomlar-reyestri-app
+    ports:
+      - "${HOST_PORT:-8080}:8000"
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "8000"
+    volumes:
+      - agronomlar_data:/app/data
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 15s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
+
+volumes:
+  agronomlar_data:
+    name: agronomlar-reyestri-data

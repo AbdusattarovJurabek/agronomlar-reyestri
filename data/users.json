@@ -1,0 +1,137 @@
+[
+  {
+    "username": "admin_agentlik",
+    "password": "Agentlik2026!",
+    "role": "admin",
+    "region": "Barchasi (Respublika)",
+    "displayName": "Agrosanoatni rivojlantirish agentligi Bosh Administratori",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "qqr_agentlik",
+    "password": "QqrAgentlik2026!",
+    "role": "regional",
+    "region": "Qoraqalpog‘iston Respublikasi",
+    "displayName": "Agentlik Qoraqalpog‘iston Respublikasi boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "andijon_agentlik",
+    "password": "AndijonAgentlik2026!",
+    "role": "regional",
+    "region": "Andijon",
+    "displayName": "Agentlik Andijon viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "buxoro_agentlik",
+    "password": "BuxoroAgentlik2026!",
+    "role": "regional",
+    "region": "Buxoro",
+    "displayName": "Agentlik Buxoro viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "fargona_agentlik",
+    "password": "FargonaAgentlik2026!",
+    "role": "regional",
+    "region": "Farg‘ona",
+    "displayName": "Agentlik Farg‘ona viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "jizzax_agentlik",
+    "password": "JizzaxAgentlik2026!",
+    "role": "regional",
+    "region": "Jizzax",
+    "displayName": "Agentlik Jizzax viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "xorazm_agentlik",
+    "password": "XorazmAgentlik2026!",
+    "role": "regional",
+    "region": "Xorazm",
+    "displayName": "Agentlik Xorazm viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "namangan_agentlik",
+    "password": "NamanganAgentlik2026!",
+    "role": "regional",
+    "region": "Namangan",
+    "displayName": "Agentlik Namangan viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "navoiy_agentlik",
+    "password": "NavoiyAgentlik2026!",
+    "role": "regional",
+    "region": "Navoiy",
+    "displayName": "Agentlik Navoiy viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "qashqadaryo_agentlik",
+    "password": "QashqadaryoAgentlik2026!",
+    "role": "regional",
+    "region": "Qashqadaryo",
+    "displayName": "Agentlik Qashqadaryo viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "samarqand_agentlik",
+    "password": "SamarqandAgentlik2026!",
+    "role": "regional",
+    "region": "Samarqand",
+    "displayName": "Agentlik Samarqand viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "sirdaryo_agentlik",
+    "password": "SirdaryoAgentlik2026!",
+    "role": "regional",
+    "region": "Sirdaryo",
+    "displayName": "Agentlik Sirdaryo viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "surxondaryo_agentlik",
+    "password": "SurxondaryoAgentlik2026!",
+    "role": "regional",
+    "region": "Surxondaryo",
+    "displayName": "Agentlik Surxondaryo viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "toshkent_v_agentlik",
+    "password": "ToshkentVAgentlik2026!",
+    "role": "regional",
+    "region": "Toshkent viloyati",
+    "displayName": "Agentlik Toshkent viloyati boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  },
+  {
+    "username": "toshkent_sh_agentlik",
+    "password": "ToshkentShAgentlik2026!",
+    "role": "regional",
+    "region": "Toshkent shahri",
+    "displayName": "Agentlik Toshkent shahri boshqarmasi",
+    "createdAt": 1700000000,
+    "lastLogin": null
+  }
+]

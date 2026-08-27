@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malakali Agronomlar Milliy Reyestri | Bog‘dorchilik va Uzumchilik Maslahat Portali</title>
+  <meta name="description" content="O‘zbekiston Respublikasida faoliyat yuritayotgan malakali agronomlar milliy reyestri va axborot portali.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Government Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-meta">
+        <span class="gov-flag"><i class="fas fa-landmark"></i> <span data-i18n="gov_portal_name">O‘zbekiston Respublikasi Agrosanoatni rivojlantirish agentligi</span></span>
+        <span class="top-divider">|</span>
+        <span class="live-clock"><i class="far fa-clock"></i> <span id="currentDate">2026-yil</span></span>
+      </div>
+      <div class="top-actions">
+        <!-- Guest (Oddiy foydalanuvchi) State -->
+        <div class="auth-guest-box" id="authGuestBox">
+          <button class="auth-btn-login" id="openLoginModalBtn" data-i18n-title="btn_login" title="Tizimga kirish">
+            <i class="fas fa-arrow-right-to-bracket"></i> <span data-i18n="btn_login">Tizimga kirish</span>
+          </button>
+        </div>
+
+        <!-- Authenticated User (Viloyat Xodimi / Admin) State -->
+        <div class="auth-user-box" id="authUserBox" style="display: none;">
+          <span class="user-badge" id="userBadge">
+            <i class="fas fa-shield-halved"></i>
+            <span id="userDisplayName" data-i18n="badge_staff">Agentlik xodimi</span>
+          </span>
+          <!-- Admin Only: Manage Regional Staff -->
+          <button class="auth-action-btn btn-accounts" id="openStaffMgmtBtn" style="display: none;" data-i18n-title="btn_staff_mgmt" title="Xodimlar boshqaruvi">
+            <i class="fas fa-users-gear"></i> <span data-i18n="btn_staff_mgmt">Xodimlar boshqaruvi</span>
+          </button>
+          <button class="auth-action-btn" id="openChangePassBtn" data-i18n-title="btn_change_pass" title="Parolni o‘zgartirish">
+            <i class="fas fa-lock"></i>
+          </button>
+          <button class="auth-action-btn btn-logout" id="logoutBtn" data-i18n-title="btn_logout" title="Chiqish">
+            <i class="fas fa-power-off"></i> <span data-i18n="btn_logout">Chiqish</span>
+          </button>
+        </div>
+
+        <div class="top-divider">|</div>
+
+        <!-- Multi-language switcher -->
+        <div class="lang-selector">
+          <button class="lang-btn active" data-lang="uz">O‘Z</button>
+          <button class="lang-btn" data-lang="ru">РУ</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Tungi/Kunduzgi rejim" aria-label="Rejimni o'zgartirish">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="container header-container">
+      <div class="brand-wrapper">
+        <div class="emblem-icon">
+          <i class="fas fa-seedling"></i>
+        </div>
+        <div class="brand-text">
+          <h1 data-i18n="brand_title">AGROSANOATNI RIVOJLANTIRISH AGENTLIGI</h1>
+          <span data-i18n="brand_subtitle">MALAKALI AGRONOMLAR MILLIY REYESTRI VA AXBOROT TIZIMI</span>
+        </div>
+      </div>
+      <div class="header-badge">
+        <i class="fas fa-shield-alt"></i>
+        <div>
+          <strong data-i18n="badge_official">Rasmiy Reyestr</strong>
+          <small data-i18n="badge_agency_system">Agentlik Axborot Tizimi</small>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <i class="fas fa-apple-whole"></i> <span data-i18n="hero_tag">Bog‘dorchilik va Uzumchilik Yo‘nalishida Axborot Portali</span>
+        </div>
+        <h2 class="hero-title" data-i18n="hero_title">Республикада фаолият юритаётган малакали агрономлар РЎЙХАТИ</h2>
+        <p class="hero-desc" data-i18n="hero_desc">
+          Agrosanoatni rivojlantirish agentligining viloyat boshqarmalari va hududiy mutaxassislari tomonidan yuritiluvchi intensiv bog‘dorchilik, tokchilik, tomchilatib sug‘orish va agrotexnika bo‘yicha malakali agronom-maslahatchilar yagona elektron bazasi.
+        </p>
+
+        <!-- Role-Based Action Buttons (Hidden for Guests, Visible for Staff/Admin) -->
+        <div class="hero-actions" id="heroActionsWrapper" style="display: none;">
+          <button class="btn btn-primary" id="openAddModalBtn">
+            <i class="fas fa-user-plus"></i> <span data-i18n="btn_add_agronomist">Yangi agronom kiritish</span>
+          </button>
+          <button class="btn btn-secondary" id="openImportModalBtn">
+            <i class="fas fa-file-excel"></i> <span data-i18n="btn_bulk_import">Excel / CSV yuklash</span>
+          </button>
+          <button class="btn btn-secondary" id="exportCsvBtn">
+            <i class="fas fa-file-download"></i> <span id="exportCsvBtnText" data-i18n="btn_export_csv">Excel eksport (.csv)</span>
+          </button>
+          <button class="btn btn-secondary" id="printBtn">
+            <i class="fas fa-print"></i> <span data-i18n="btn_print">Chop etish</span>
+          </button>
+        </div>
+
+        <!-- Regional Mode Banner (when logged in as Regional Staff) -->
+        <div class="regional-info-bar" id="regionalInfoBar" style="display: none;">
+          <i class="fas fa-building-flag"></i>
+          <span><span data-i18n="regional_banner_prefix">Siz Agrosanoatni rivojlantirish agentligi</span> <strong><span id="bannerRegionName">Andijon</span></strong> <span data-i18n="regional_banner_suffix">viloyati boshqarmasi mas'ul xodimisiz.</span></span>
+        </div>
+
+        <!-- Admin Mode Banner (when logged in as Admin) -->
+        <div class="admin-info-bar" id="adminInfoBar" style="display: none;">
+          <i class="fas fa-crown"></i>
+          <span data-i18n="admin_banner_text">Siz Agrosanoatni rivojlantirish agentligi Bosh Administratori sifatida tizimdasiz. Barcha hududlar xodimlari va agronomlarini to‘liq boshqarishingiz mumkin.</span>
+        </div>
+      </div>
+
+      <!-- Live Stats Banner -->
+      <div class="stats-card-row">
+        <div class="stat-box">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-info">
+            <span class="stat-number" id="statTotal">--</span>
+            <span class="stat-label" data-i18n="stat_total_label">Jami malakali agronomlar</span>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon"><i class="fas fa-map-marked-alt"></i></div>
+          <div class="stat-info">
+            <span class="stat-number" id="statRegions">--</span>
+            <span class="stat-label" data-i18n="stat_regions_label">Qamrab olingan hududlar</span>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+          <div class="stat-info">
+            <span class="stat-number" id="statHigherEdu">--</span>
+            <span class="stat-label" data-i18n="stat_edu_label">Oliy ma’lumotli mutaxassislar</span>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon"><i class="fas fa-wine-bottle"></i></div>
+          <div class="stat-info">
+            <span class="stat-number" id="statFruitGrape">--</span>
+            <span class="stat-label" data-i18n="stat_fruit_label">Bog‘ & uzumchilik maslahatchilari</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter and Search Controls (For All Roles) -->
+  <main class="container main-content">
+    <div class="filter-card">
+      <div class="filter-grid">
+        <!-- Search Input -->
+        <div class="filter-field search-field">
+          <label for="searchInput"><i class="fas fa-search"></i> <span data-i18n="filter_search_label">Qidiruv:</span></label>
+          <input type="text" id="searchInput" data-i18n-placeholder="filter_search_placeholder" placeholder="F.I.SH., tuman, o‘quv yurti yoki yo‘nalish bo‘yicha qidirish..." autocomplete="off">
+        </div>
+
+        <!-- Region Dropdown -->
+        <div class="filter-field">
+          <label for="regionFilter"><i class="fas fa-map-marker-alt"></i> <span data-i18n="filter_region_label">Ҳудуд номи (Viloyat):</span></label>
+          <select id="regionFilter">
+            <option value="" data-i18n="filter_region_all">Barcha hududlar (14 ta)</option>
+          </select>
+        </div>
+
+        <!-- District Dropdown -->
+        <div class="filter-field">
+          <label for="districtFilter"><i class="fas fa-map-pin"></i> <span data-i18n="filter_district_label">Туман номи:</span></label>
+          <select id="districtFilter" disabled>
+            <option value="" data-i18n="filter_district_all">Barcha tumanlar</option>
+          </select>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="filter-field filter-reset-field">
+          <button class="btn btn-secondary btn-reset" id="resetFiltersBtn" data-i18n-title="btn_reset" title="Filtrlarni tozalash">
+            <i class="fas fa-rotate-left"></i> <span data-i18n="btn_reset">Tozalash</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Specialization Chips -->
+      <div class="specialization-bar">
+        <span class="chips-label"><i class="fas fa-tags"></i> <span data-i18n="spec_label">Maslahat yo‘nalishi:</span></span>
+        <div class="chips-list" id="specializationChips">
+          <button class="spec-chip active" data-spec="" data-i18n="spec_all">Barchasi</button>
+          <button class="spec-chip" data-spec="bog‘dorchilik" data-i18n="spec_gardening">Bog‘dorchilik</button>
+          <button class="spec-chip" data-spec="uzumchilik" data-i18n="spec_viticulture">Uzumchilik</button>
+          <button class="spec-chip" data-spec="himoya" data-i18n="spec_protection">O‘simliklar himoyasi</button>
+          <button class="spec-chip" data-spec="tomchilatib" data-i18n="spec_irrigation">Tomchilatib sug‘orish</button>
+          <button class="spec-chip" data-spec="subtropik" data-i18n="spec_subtropical">Subtropik ekinlar</button>
+        </div>
+
+        <!-- View Switcher -->
+        <div class="view-switcher" role="radiogroup" aria-label="Ko‘rinish turi">
+          <button class="view-btn active" id="tableViewBtn" data-i18n-title="view_table" title="Jadval ko‘rinishi">
+            <i class="fas fa-table-list"></i> <span data-i18n="view_table">Jadval</span>
+          </button>
+          <button class="view-btn" id="cardViewBtn" data-i18n-title="view_cards" title="Kartochkalar ko‘rinishi">
+            <i class="fas fa-border-all"></i> <span data-i18n="view_cards">Kartochkalar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Filter Summary & Result Count -->
+    <div class="results-header">
+      <div class="results-count">
+        <span data-i18n="results_showing">Ko‘rsatilmoqda:</span> <strong id="resultsCount">0</strong> <span data-i18n="results_agronomists">ta agronom</span> (<span id="totalCount">0</span> <span data-i18n="results_of">tadan</span>)
+      </div>
+      <div class="quick-links" id="quickAddLinkBox" style="display: none;">
+        <button class="btn-link" id="quickAddBtn"><i class="fas fa-plus"></i> <span data-i18n="quick_add_link">Yangi agronom qo‘shish</span></button>
+      </div>
+    </div>
+
+    <!-- Table View Container -->
+    <div class="table-responsive-wrapper" id="tableViewContainer">
+      <table class="agro-table" id="agronomistsTable">
+        <thead>
+          <tr>
+            <th class="col-num" data-i18n="th_num">№</th>
+            <th class="col-region" data-i18n="th_region">Ҳудуд номи</th>
+            <th class="col-district" data-i18n="th_district">Туман номи</th>
+            <th class="col-name" data-i18n="th_fullname">Малакали агроном: Ф.И.Ш.</th>
+            <th class="col-phone" data-i18n="th_phone">Телефон рақами</th>
+            <th class="col-birth" data-i18n="th_birth">Туғилган йили</th>
+            <th class="col-spec" data-i18n="th_spec">Мутахассислиги</th>
+            <th class="col-university" data-i18n="th_university">Тамомлаган ўқув юрти</th>
+            <th class="col-year" data-i18n="th_grad_year">Тамомлаган йили</th>
+            <th class="col-actions" data-i18n="th_actions">Aloqa / Amal</th>
+          </tr>
+        </thead>
+        <tbody id="agronomistsTableBody">
+          <!-- Dynamically populated rows -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Cards Grid Container -->
+    <div class="cards-grid-wrapper" id="cardViewContainer" hidden>
+      <div class="agro-cards-grid" id="agronomistsCardsGrid">
+        <!-- Dynamically populated cards -->
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" hidden>
+      <i class="fas fa-search-minus"></i>
+      <h3 data-i18n="empty_title">Hech qanday ma’lumot topilmadi</h3>
+      <p data-i18n="empty_desc">Kiritilgan so‘rov yoki tanlangan filtrlarga mos agronom mutaxassis topilmadi.</p>
+      <button class="btn btn-primary" id="emptyResetBtn"><i class="fas fa-rotate-left"></i> <span data-i18n="btn_reset">Filtrlarni tozalash</span></button>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-wrapper" id="paginationWrapper">
+      <div class="pagination" id="paginationControls">
+        <!-- Dynamic pagination buttons -->
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL 1: Add / Edit Agronomist -->
+  <div class="modal-overlay" id="agroModal" hidden>
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fas fa-user-gear"></i>
+          <h3 id="modalTitle" data-i18n="modal_agro_add_title">Yangi Malakali Agronom Kiritish</h3>
+        </div>
+        <button class="modal-close-btn" id="closeAgroModalBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+      <form id="agroForm" class="modal-form">
+        <input type="hidden" id="agroId" value="">
+
+        <!-- Locked Region Notice for Regional Staff -->
+        <div class="region-lock-badge" id="agroRegionLockBadge" style="display: none;">
+          <i class="fas fa-lock"></i>
+          <span><span data-i18n="modal_agro_region_lock">Biriktirilgan hudud:</span> <strong id="lockedRegionNameText">Andijon</strong> <span data-i18n="modal_agro_region_lock_note">(faqat o‘z hududingizga kiritasiz)</span></span>
+        </div>
+
+        <div class="form-grid">
+          <!-- Region -->
+          <div class="form-group">
+            <label for="agroRegion"><span data-i18n="lbl_region">Ҳудуд номи (Viloyat)</span> <span class="req">*</span></label>
+            <select id="agroRegion" required>
+              <option value="" data-i18n="filter_district_prompt">-- Viloyatni tanlang --</option>
+            </select>
+          </div>
+
+          <!-- District -->
+          <div class="form-group">
+            <label for="agroDistrict"><span data-i18n="lbl_district">Туман номи</span> <span class="req">*</span></label>
+            <select id="agroDistrict" required disabled>
+              <option value="" data-i18n="filter_district_prompt">-- Avval viloyatni tanlang --</option>
+            </select>
+          </div>
+
+          <!-- Full Name -->
+          <div class="form-group form-col-2">
+            <label for="agroFullName"><span data-i18n="lbl_fullname">Малакали агроном: Фамилия, исми ва отасининг исми</span> <span class="req">*</span></label>
+            <input type="text" id="agroFullName" placeholder="Masalan: Sulaymonov Abdumutallib Ko‘chqarovich" required minlength="3" maxlength="150">
+          </div>
+
+          <!-- Phone -->
+          <div class="form-group">
+            <label for="agroPhone"><span data-i18n="lbl_phone">Телефон рақами</span> <span class="req">*</span></label>
+            <input type="text" id="agroPhone" placeholder="+998 90 123-45-67 yoki 99-467-96-67" required>
+          </div>
+
+          <!-- Birth Date/Year -->
+          <div class="form-group">
+            <label for="agroBirthDate"><span data-i18n="lbl_birth">Туғилган кун, ой ва йили</span></label>
+            <input type="text" id="agroBirthDate" placeholder="Masalan: 1967 yoki 26.07.1958">
+          </div>
+
+          <!-- Specialization -->
+          <div class="form-group">
+            <label for="agroSpecialization"><span data-i18n="lbl_spec">Мутахассислиги</span> <span class="req">*</span></label>
+            <input type="text" id="agroSpecialization" placeholder="Masalan: Agronom, Bog‘bon-agronom, Uzumchi" value="Agronom" required>
+          </div>
+
+          <!-- Graduation Year -->
+          <div class="form-group">
+            <label for="agroGradYear"><span data-i18n="lbl_grad_year">Тамомлаган йили</span></label>
+            <input type="number" id="agroGradYear" placeholder="Masalan: 1996" min="1940" max="2050">
+          </div>
+
+          <!-- University -->
+          <div class="form-group form-col-2">
+            <label for="agroUniversity"><span data-i18n="lbl_university">Тамомлаган ўқув юрти</span></label>
+            <input type="text" id="agroUniversity" placeholder="Masalan: Toshkent Davlat Agrar Universiteti">
+          </div>
+
+          <!-- Direction & Consultation topics -->
+          <div class="form-group form-col-2">
+            <label for="agroDirection"><span data-i18n="lbl_direction">Maslahat yo‘nalishi va mutaxassisligi</span></label>
+            <input type="text" id="agroDirection" placeholder="Masalan: Bog‘dorchilik va intensiv ko‘chatchilik, tomchilatib sug‘orish">
+          </div>
+
+          <!-- Experience -->
+          <div class="form-group">
+            <label for="agroExperience"><span data-i18n="lbl_experience">Ish tajribasi</span></label>
+            <input type="text" id="agroExperience" placeholder="Masalan: 25 yil">
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label for="agroStatus"><span data-i18n="lbl_status">Holati</span></label>
+            <select id="agroStatus">
+              <option value="active" data-i18n="opt_status_active">Faol (Maslahat beradi)</option>
+              <option value="busy" data-i18n="opt_status_busy">Vaqtincha band</option>
+              <option value="inactive" data-i18n="opt_status_inactive">Faol emas</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-status-message" id="agroFormStatus" hidden></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelAgroModalBtn" data-i18n="btn_cancel">Bekor qilish</button>
+          <button type="submit" class="btn btn-primary" id="saveAgroBtn">
+            <i class="fas fa-check"></i> <span data-i18n="btn_save">Saqlash</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Excel / CSV Batch Import -->
+  <div class="modal-overlay" id="importModal" hidden>
+    <div class="modal-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fas fa-file-import"></i>
+          <h3 data-i18n="modal_import_title">Excel / CSV Fayldan Ommaviy Yuklash</h3>
+        </div>
+        <button class="modal-close-btn" id="closeImportModalBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="region-lock-badge" id="importRegionLockBadge" style="display: none;">
+          <i class="fas fa-info-circle"></i>
+          <span><span data-i18n="modal_import_lock_note">Yuklanayotgan barcha agronomlar avtomatik tarzda biriktiriladi:</span> <strong><span id="importLockedRegionText">Andijon</span></strong></span>
+        </div>
+
+        <div class="import-instructions">
+          <p data-i18n="modal_import_guide">
+            Excel yoki CSV fayldan agronomlar ro‘yxatini bir zumda bazaga yuklang. Ustunlar tartibi:
+          </p>
+          <code>Ҳудуд номи | Туман номи | Ф.И.Ш. | Телефон рақами | Туғилган йили | Мутахассислиги | Ўқув юрти | Тамомлаган йили</code>
+          <div class="template-download-row">
+            <a href="#" id="downloadTemplateBtn" class="template-link"><i class="fas fa-download"></i> <span data-i18n="btn_download_template">Namuna CSV shablonini yuklab olish</span></a>
+          </div>
+        </div>
+
+        <!-- Drag & Drop Zone -->
+        <div class="dropzone" id="fileDropzone">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <h4 data-i18n="dropzone_title">Faylni shu yerga tashlang yoki tanlang</h4>
+          <p data-i18n="dropzone_desc">CSV, TSV yoki JSON formatdagi fayllar qo‘llab-quvvatlanadi (Maks: 5MB)</p>
+          <input type="file" id="importFileInput" accept=".csv,.tsv,.json,.txt" hidden>
+          <button type="button" class="btn btn-secondary" id="browseFileBtn" data-i18n="btn_browse_file">Faylni tanlash</button>
+        </div>
+
+        <!-- Preview Table -->
+        <div class="import-preview-wrapper" id="importPreviewWrapper" hidden>
+          <div class="preview-header">
+            <h4><span data-i18n="preview_found">Aniqlangan yozuvlar:</span> <strong id="previewCount">0</strong></h4>
+            <span class="preview-badge" id="previewStatus" data-i18n="preview_ready">Tayyor</span>
+          </div>
+          <div class="table-responsive-wrapper" style="max-height: 260px;">
+            <table class="agro-table preview-table" id="previewTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th data-i18n="th_region">Ҳудуд</th>
+                  <th data-i18n="th_district">Туман</th>
+                  <th data-i18n="th_fullname">Ф.И.Ш.</th>
+                  <th data-i18n="th_phone">Телефон</th>
+                  <th data-i18n="th_spec">Мутахассислик</th>
+                  <th data-i18n="th_university">Ўқув юрти</th>
+                </tr>
+              </thead>
+              <tbody id="previewTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="modal-status-message" id="importStatus" hidden></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelImportBtn" data-i18n="btn_cancel">Bekor qilish</button>
+        <button type="button" class="btn btn-primary" id="startImportBtn" disabled>
+          <i class="fas fa-upload"></i> <span data-i18n="btn_start_import">Bazaga yuklash</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Farmer Consultation Request -->
+  <div class="modal-overlay" id="consultModal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fas fa-comments"></i>
+          <h3 data-i18n="modal_consult_title">Agronomdan Maslahat So‘rash</h3>
+        </div>
+        <button class="modal-close-btn" id="closeConsultModalBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+      <form id="consultForm" class="modal-form">
+        <input type="hidden" id="consultAgroId" value="">
+        <div class="consult-agronomist-banner" id="consultAgroBanner">
+          <strong id="consultAgroName">Agronom</strong>
+          <small id="consultAgroMeta">Viloyat, tuman</small>
+        </div>
+
+        <div class="form-group">
+          <label for="farmerName"><span data-i18n="lbl_farmer_name">Ism, familiyangiz (Fermer/Dehqon)</span> <span class="req">*</span></label>
+          <input type="text" id="farmerName" placeholder="F.I.SH. kiriting" required minlength="2">
+        </div>
+
+        <div class="form-group">
+          <label for="farmerPhone"><span data-i18n="lbl_farmer_phone">Telefon raqamingiz</span> <span class="req">*</span></label>
+          <input type="text" id="farmerPhone" placeholder="+998 90 123-45-67" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consultTopic"><span data-i18n="lbl_consult_topic">Maslahat mavzusi</span></label>
+          <select id="consultTopic">
+            <option value="Intensiv bog‘dorchilik" data-i18n="topic_orchard">Intensiv bog‘dorchilik</option>
+            <option value="Uzumchilik va tok parvarishi" data-i18n="topic_grapes">Uzumchilik va tok parvarishi</option>
+            <option value="Zararkunanda va kasalliklarga qarshi kurash" data-i18n="topic_protection">Zararkunanda va kasalliklarga qarshi kurash</option>
+            <option value="Tomchilatib sug‘orish tizimlari" data-i18n="topic_drip">Tomchilatib sug‘orish tizimlari</option>
+            <option value="Ko‘chatchilik va payvandlash" data-i18n="topic_nursery">Ko‘chatchilik va payvandlash</option>
+            <option value="Boshqa agrotexnik maslahatlar" data-i18n="topic_other">Boshqa agrotexnik maslahatlar</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="consultMessage"><span data-i18n="lbl_consult_msg">Savolingiz yoki muammo tavsifi</span> <span class="req">*</span></label>
+          <textarea id="consultMessage" rows="4" placeholder="Bog‘ingiz, ekin turi, maydoni va yuzaga kelgan muammoni batafsil yozing..." required minlength="5"></textarea>
+        </div>
+
+        <div class="modal-status-message" id="consultStatus" hidden></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelConsultBtn" data-i18n="btn_cancel">Bekor qilish</button>
+          <button type="submit" class="btn btn-primary" id="sendConsultBtn">
+            <i class="fas fa-paper-plane"></i> <span data-i18n="btn_send_consult">So‘rovni yuborish</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: User / Staff Login Modal -->
+  <div class="modal-overlay" id="loginModal" hidden>
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fas fa-shield-halved"></i>
+          <h3 data-i18n="modal_login_title">Tizimga Kirish</h3>
+        </div>
+        <button class="modal-close-btn" id="closeLoginModalBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+
+      <form id="loginForm" class="modal-form">
+        <div class="login-intro-text" data-i18n="login_intro">
+          Agrosanoatni rivojlantirish agentligi viloyat mas'ul xodimi yoki Bosh Administrator hisobingiz orqali kiring:
+        </div>
+
+        <div class="form-group">
+          <label for="loginUsername"><i class="fas fa-user"></i> <span data-i18n="lbl_login_username">Login</span> <span class="req">*</span></label>
+          <input type="text" id="loginUsername" placeholder="Masalan: andijon_agentlik" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword"><i class="fas fa-key"></i> <span data-i18n="lbl_login_password">Parol</span> <span class="req">*</span></label>
+          <div class="password-input-wrapper">
+            <input type="password" id="loginPassword" placeholder="Parolingizni kiriting" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-password" id="togglePasswordBtn" title="Parolni ko‘rsatish">
+              <i class="fas fa-eye" id="togglePasswordIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="modal-status-message" id="loginStatusMessage" hidden></div>
+
+        <div class="modal-footer login-footer">
+          <button type="button" class="btn btn-secondary" id="cancelLoginBtn" data-i18n="btn_cancel">Bekor qilish</button>
+          <button type="submit" class="btn btn-primary" id="submitLoginBtn">
+            <i class="fas fa-arrow-right-to-bracket"></i> <span data-i18n="btn_submit_login">Kirish</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: Admin - Staff Management & User Creation (Rol 3: Admin) -->
+  <div class="modal-overlay" id="manageStaffModal" hidden>
+    <div class="modal-card modal-xl">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fas fa-users-gear"></i>
+          <h3 data-i18n="modal_staff_title">Agentlik Viloyat Xodimlarini Yaratish va Boshqarish</h3>
+        </div>
+        <button class="modal-close-btn" id="closeStaffMgmtBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Add New Staff Form Accordion/Section -->
+        <div class="staff-create-box">
+          <div class="staff-box-header">
+            <h4><i class="fas fa-user-plus"></i> <span data-i18n="staff_create_title">Yangi Viloyat Xodimini Qo‘shish</span></h4>
+            <span class="subtext" data-i18n="staff_create_subtext">Admin tomonidan agentlik hududiy bo‘limi uchun login va parol berish</span>
+          </div>
+
+          <form id="createStaffForm" class="staff-form-grid">
+            <div class="form-group">
+              <label for="newStaffRegion"><span data-i18n="lbl_staff_region">Biriktirilgan Viloyat</span> <span class="req">*</span></label>
+              <select id="newStaffRegion" required>
+                <option value="">-- Viloyatni tanlang --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="newStaffUsername"><span data-i18n="lbl_staff_username">Login (Foydalanuvchi)</span> <span class="req">*</span></label>
+              <input type="text" id="newStaffUsername" placeholder="masalan: fargona_agentlik" required minlength="3">
+            </div>
+
+            <div class="form-group">
+              <label for="newStaffPassword"><span data-i18n="lbl_staff_password">Boshlang‘ich Parol</span> <span class="req">*</span></label>
+              <input type="text" id="newStaffPassword" placeholder="masalan: FargonaAgentlik2026!" required minlength="4">
+            </div>
+
+            <div class="form-group">
+              <label for="newStaffDisplayName"><span data-i18n="lbl_staff_name">Mas'ul xodim F.I.SH.</span></label>
+              <input type="text" id="newStaffDisplayName" placeholder="F.I.SH. yoki lavozimi">
+            </div>
+
+            <div class="form-group form-actions-cell">
+              <button type="submit" class="btn btn-primary btn-create-staff" id="createStaffSubmitBtn">
+                <i class="fas fa-plus"></i> <span data-i18n="btn_create_staff">Xodimni yaratish</span>
+              </button>
+            </div>
+          </form>
+          <div class="modal-status-message" id="createStaffStatus" hidden></div>
+        </div>
+
+        <!-- Staff List Table -->
+        <div class="staff-list-section">
+          <div class="accounts-header-info">
+            <h4><i class="fas fa-id-card-clip"></i> <span data-i18n="staff_list_title">Agentlik Viloyat Xodimlari Reyestri</span></h4>
+            <button class="btn btn-secondary btn-sm" id="printAccountsBtn">
+              <i class="fas fa-print"></i> <span data-i18n="btn_print_list">Ro‘yxatni chop etish</span>
+            </button>
+          </div>
+
+          <div class="table-responsive-wrapper" style="max-height: 380px;">
+            <table class="agro-table" id="accountsTable">
+              <thead>
+                <tr>
+                  <th data-i18n="th_staff_num">№</th>
+                  <th data-i18n="th_staff_region">Ҳудуд номи</th>
+                  <th data-i18n="th_staff_login">Login</th>
+                  <th data-i18n="th_staff_password">Parol</th>
+                  <th data-i18n="th_staff_name">F.I.SH. / Lavozimi</th>
+                  <th data-i18n="th_staff_last_login">Oxirgi kirish</th>
+                  <th data-i18n="th_staff_actions">Amallar</th>
+                </tr>
+              </thead>
+              <tbody id="accountsTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="closeStaffMgmtFooterBtn" data-i18n="btn_close">Yopish</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 6: Change Password Modal -->
+  <div class="modal-overlay" id="changePasswordModal" hidden>
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <i class="fas fa-lock"></i>
+          <h3 data-i18n="modal_password_title">Parolni O‘zgartirish</h3>
+        </div>
+        <button class="modal-close-btn" id="closeChangePasswordBtn" type="button" aria-label="Yopish">&times;</button>
+      </div>
+
+      <form id="changePasswordForm" class="modal-form">
+        <div class="form-group">
+          <label for="oldPassword"><span data-i18n="lbl_old_password">Amaldagi parol</span> <span class="req">*</span></label>
+          <input type="password" id="oldPassword" required autocomplete="current-password">
+        </div>
+
+        <div class="form-group">
+          <label for="newPassword"><span data-i18n="lbl_new_password">Yangi parol (kamida 4 ta belgi)</span> <span class="req">*</span></label>
+          <input type="password" id="newPassword" required minlength="4" autocomplete="new-password">
+        </div>
+
+        <div class="form-group">
+          <label for="confirmNewPassword"><span data-i18n="lbl_confirm_password">Yangi parolni takrorlang</span> <span class="req">*</span></label>
+          <input type="password" id="confirmNewPassword" required minlength="4" autocomplete="new-password">
+        </div>
+
+        <div class="modal-status-message" id="changePasswordStatus" hidden></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelChangePasswordBtn" data-i18n="btn_cancel">Bekor qilish</button>
+          <button type="submit" class="btn btn-primary" id="saveNewPasswordBtn">
+            <i class="fas fa-check"></i> <span data-i18n="btn_save">Saqlash</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toastMessage"></div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="emblem-icon-sm">
+          <i class="fas fa-seedling"></i>
+        </div>
+        <div>
+          <h4 data-i18n="footer_title">O‘zbekiston Respublikasi Agrosanoatni rivojlantirish agentligi</h4>
+          <p data-i18n="footer_subtitle">Malakali agronomlar milliy reyestri va axborot tizimi.</p>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <p data-i18n="footer_copy">© 2026 Barcha huquqlar himoyalangan.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
