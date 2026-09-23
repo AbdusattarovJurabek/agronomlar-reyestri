@@ -1,0 +1,12 @@
+services:
+  agronomlar-portal:
+    ports: !override []
+    volumes: !override
+      - /var/lib/agronomlar-reyestri/data:/app/data
+    networks:
+      - default
+      - gardenai_proxy
+
+networks:
+  gardenai_proxy:
+    external: true
